@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AstroLuck6</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #1a0033, #330066);
+  color: white;
+  text-align: center;
+  padding: 50px;
+}
+h1 {
+  font-size: 48px;
+  color: gold;
+  margin-bottom: 20px;
+}
+p {
+  font-size: 20px;
+  margin: 10px 0 30px 0;
+}
+input[type="email"] {
+  padding: 12px;
+  width: 250px;
+  border-radius: 6px;
+  border: none;
+  margin-right: 10px;
+}
+button {
+  background: gold;
+  border: none;
+  padding: 12px 25px;
+  font-size: 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 10px;
+}
+button:hover {
+  opacity: 0.8;
+}
+.social-icons {
+  margin-top: 40px;
+}
+.social-icons a {
+  color: gold;
+  margin: 0 10px;
+  font-size: 24px;
+  text-decoration: none;
+}
+#balls-container {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+.ball {
+  width: 60px;
+  height: 60px;
+  background: gold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #330066;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+}
+</style>
+</head>
+<body>
+
+<h1>AstroLuck6</h1>
+<p>Günlük Burç & Şans Sayıları</p>
+<p>Yakında yayında. İlk haberdar olanlardan olun.</p>
+
+<form action="mailto:contact@astroluck6.com" method="post" enctype="text/plain">
+  <input type="email" name="email" placeholder="E-mail adresiniz" required>
+  <button type="submit">Beta Listesine Katıl</button>
+</form>
+
+<!-- Rastgele sayı butonu -->
+<button id="generate-btn">Şanslı 6 Sayıyı Gör!</button>
+
+<!-- Sayılar burada gözükecek -->
+<div id="balls-container"></div>
+
+<div class="social-icons">
+  <a href="https://instagram.com/astroluck6" target="_blank">Instagram</a>
+  <a href="https://tiktok.com/@astroluck6" target="_blank">TikTok</a>
+  <a href="https://twitter.com/astroluck6" target="_blank">Twitter</a>
+</div>
+
+<script>
+const generateBtn = document.getElementById('generate-btn');
+const ballsContainer = document.getElementById('balls-container');
+
+generateBtn.addEventListener('click', () => {
+  ballsContainer.innerHTML = ''; // eski topları temizle
+  let numbers = new Set();
+  while(numbers.size < 6){
+    let n = Math.floor(Math.random() * 49) + 1;
+    numbers.add(n);
+  }
+  numbers.forEach(num => {
+    let ball = document.createElement('div');
+    ball.className = 'ball';
+    ball.textContent = num;
+    ballsContainer.appendChild(ball);
+  });
+});
+</script>
+
+</body>
+</html>
