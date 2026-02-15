@@ -5,98 +5,102 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AstroLuck6</title>
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-body {
+body{
   margin:0;
-  font-family:'Poppins', sans-serif;
-  background: radial-gradient(circle at top, #2a0050, #0f001f 70%);
+  font-family:'Poppins',sans-serif;
+  background:#0a001a;
   color:white;
   text-align:center;
-  overflow-x:hidden;
+  overflow:hidden;
+}
+
+/* yıldız efekti */
+body::before{
+  content:"";
+  position:fixed;
+  width:200%;
+  height:200%;
+  background:transparent url("https://www.transparenttextures.com/patterns/stardust.png");
+  animation:moveStars 60s linear infinite;
+  opacity:0.4;
+}
+
+@keyframes moveStars{
+  from{transform:translate(0,0);}
+  to{transform:translate(-500px,-500px);}
 }
 
 h1{
-  font-size:52px;
+  margin-top:80px;
+  font-size:55px;
   color:gold;
-  margin-top:60px;
-  text-shadow:0 0 20px gold;
+  text-shadow:0 0 30px gold;
 }
 
 .subtitle{
   font-size:20px;
-  opacity:0.9;
+  opacity:0.85;
 }
 
-select, button {
+select,button{
   padding:12px 20px;
   border-radius:30px;
   border:none;
-  font-size:16px;
   margin:10px;
+  font-size:16px;
 }
 
 button{
-  background:linear-gradient(45deg,gold,#ffcc00);
-  cursor:pointer;
+  background:linear-gradient(45deg,#ffd700,#ffae00);
   font-weight:600;
-  box-shadow:0 0 20px rgba(255,215,0,0.6);
+  cursor:pointer;
+  box-shadow:0 0 20px rgba(255,215,0,0.7);
 }
 
 button:hover{
-  transform:scale(1.05);
+  transform:scale(1.08);
 }
 
 #balls-container{
   margin-top:40px;
   display:flex;
   justify-content:center;
-  flex-wrap:wrap;
   gap:15px;
+  flex-wrap:wrap;
 }
 
 .ball{
-  width:70px;
-  height:70px;
+  width:75px;
+  height:75px;
   border-radius:50%;
-  background: radial-gradient(circle at 30% 30%, #fff8b0, gold 60%);
+  background:radial-gradient(circle at 30% 30%,#fff8b0,gold 60%);
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:800;
   font-size:22px;
   color:#330066;
-  box-shadow:0 0 25px rgba(255,215,0,0.8);
-  animation: glow 2s infinite alternate;
+  box-shadow:0 0 25px gold;
+  animation:pulse 2s infinite alternate;
 }
 
-@keyframes glow{
-  from{ box-shadow:0 0 15px rgba(255,215,0,0.6);}
-  to{ box-shadow:0 0 35px rgba(255,215,0,1);}
-}
-
-.email-box{
-  margin-top:40px;
-}
-
-input[type="email"]{
-  padding:12px;
-  border-radius:30px;
-  border:none;
-  width:250px;
+@keyframes pulse{
+  from{box-shadow:0 0 15px gold;}
+  to{box-shadow:0 0 35px #fff;}
 }
 
 .social{
-  margin-top:50px;
+  margin-top:60px;
 }
 
 .social a{
+  font-size:30px;
   margin:0 15px;
-  font-size:28px;
   color:gold;
-  text-decoration:none;
   transition:0.3s;
 }
 
@@ -104,45 +108,31 @@ input[type="email"]{
   color:white;
 }
 </style>
-
-<!-- Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 </head>
 <body>
 
 <h1>AstroLuck6</h1>
-<p class="subtitle">Burcunu seç, bugünün şanslı 6 sayısını keşfet.</p>
+<p class="subtitle">Burcunu seç ve bugünün kozmik 6 sayısını keşfet.</p>
 
-<!-- BURÇ SEÇİM -->
 <select id="zodiac">
-  <option value="aries">Koç</option>
-  <option value="taurus">Boğa</option>
-  <option value="gemini">İkizler</option>
-  <option value="cancer">Yengeç</option>
-  <option value="leo">Aslan</option>
-  <option value="virgo">Başak</option>
-  <option value="libra">Terazi</option>
-  <option value="scorpio">Akrep</option>
-  <option value="sagittarius">Yay</option>
-  <option value="capricorn">Oğlak</option>
-  <option value="aquarius">Kova</option>
-  <option value="pisces">Balık</option>
+<option value="aries">Koç</option>
+<option value="taurus">Boğa</option>
+<option value="gemini">İkizler</option>
+<option value="cancer">Yengeç</option>
+<option value="leo">Aslan</option>
+<option value="virgo">Başak</option>
+<option value="libra">Terazi</option>
+<option value="scorpio">Akrep</option>
+<option value="sagittarius">Yay</option>
+<option value="capricorn">Oğlak</option>
+<option value="aquarius">Kova</option>
+<option value="pisces">Balık</option>
 </select>
 
-<button onclick="generateNumbers()">Şanslı Sayıları Göster</button>
+<button onclick="generateNumbers()">Kozmik Sayıları Göster</button>
 
 <div id="balls-container"></div>
 
-<!-- EMAIL -->
-<div class="email-box">
-<form action="mailto:contact@astroluck6.com" method="post">
-<input type="email" placeholder="E-mail adresiniz" required>
-<button type="submit">Beta Listesine Katıl</button>
-</form>
-</div>
-
-<!-- SOSYAL MEDYA -->
 <div class="social">
 <a href="https://instagram.com/astroluck6" target="_blank"><i class="fab fa-instagram"></i></a>
 <a href="https://tiktok.com/@astroluck6" target="_blank"><i class="fab fa-tiktok"></i></a>
@@ -151,22 +141,22 @@ input[type="email"]{
 
 <script>
 function getSeed(zodiac){
-  const today = new Date();
-  let base = today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate();
-  let zodiacValue = zodiac.split('').reduce((a,b)=>a+b.charCodeAt(0),0);
-  return base + zodiacValue;
+  const today=new Date();
+  let base=today.getFullYear()*10000+(today.getMonth()+1)*100+today.getDate();
+  let zodiacValue=zodiac.split('').reduce((a,b)=>a+b.charCodeAt(0),0);
+  return base+zodiacValue;
 }
 
 function seededRandom(seed){
-  const x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
+  const x=Math.sin(seed)*10000;
+  return x-Math.floor(x);
 }
 
 function generateNumbers(){
-  const zodiac = document.getElementById("zodiac").value;
-  const container = document.getElementById("balls-container");
+  const zodiac=document.getElementById("zodiac").value;
+  const container=document.getElementById("balls-container");
   container.innerHTML="";
-  let seed = getSeed(zodiac);
+  let seed=getSeed(zodiac);
   let numbers=new Set();
   let i=0;
   while(numbers.size<6){
@@ -185,7 +175,3 @@ function generateNumbers(){
 
 </body>
 </html>
-
-
-
-
