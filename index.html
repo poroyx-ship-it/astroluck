@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AstroLuck6</title>
 
-<!-- Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
 *{
@@ -18,102 +17,113 @@ font-family:'Poppins',sans-serif;
 
 body{
 height:100vh;
-background: radial-gradient(circle at top,#140033,#000);
-overflow:hidden;
-color:white;
+background: radial-gradient(circle at 50% 20%, #1a0033 0%, #000 70%);
 display:flex;
 justify-content:center;
 align-items:center;
 flex-direction:column;
+color:white;
+overflow:hidden;
+position:relative;
 }
 
-/* Yıldız efekti */
+/* yıldız katmanı */
 body::before{
 content:"";
 position:absolute;
 width:200%;
 height:200%;
 background:url("https://www.transparenttextures.com/patterns/stardust.png");
-animation:stars 60s linear infinite;
-opacity:0.4;
+opacity:0.35;
+animation:moveStars 120s linear infinite;
 }
 
-@keyframes stars{
+@keyframes moveStars{
 from{transform:translate(0,0);}
-to{transform:translate(-500px,500px);}
+to{transform:translate(-800px,800px);}
 }
 
-/* Logo */
+/* üst sol logo */
 .logo{
 position:absolute;
-top:30px;
-left:40px;
-font-size:22px;
-font-weight:bold;
-color:gold;
-text-shadow:0 0 15px gold;
-}
-
-/* Başlık */
-h1{
-font-size:80px;
-color:gold;
-text-shadow:0 0 25px gold,0 0 50px orange;
-margin-bottom:40px;
+top:35px;
+left:50px;
+font-size:26px;
+font-weight:700;
+color:#FFD700;
+text-shadow:0 0 20px #FFD700, 0 0 40px orange;
 z-index:2;
 }
 
-/* Buton */
+/* ana başlık */
+h1{
+font-size:90px;
+font-weight:900;
+color:#FFD700;
+text-shadow:
+0 0 20px #FFD700,
+0 0 40px #FFD700,
+0 0 80px orange;
+margin-bottom:50px;
+z-index:2;
+}
+
+/* buton */
 .glow-btn{
-background:gold;
-color:black;
+background:linear-gradient(45deg,#FFD700,#ffcc00);
 border:none;
-padding:15px 35px;
-border-radius:40px;
-font-weight:bold;
+padding:18px 45px;
+border-radius:50px;
 font-size:18px;
+font-weight:700;
 cursor:pointer;
-box-shadow:0 0 15px gold,0 0 30px orange;
+color:black;
+box-shadow:
+0 0 20px #FFD700,
+0 0 50px orange,
+0 0 80px orange;
 transition:0.3s;
-margin:10px;
+margin:12px;
 }
 
 .glow-btn:hover{
-transform:scale(1.05);
-box-shadow:0 0 25px gold,0 0 60px orange;
+transform:scale(1.07);
+box-shadow:
+0 0 30px #FFD700,
+0 0 80px orange,
+0 0 120px orange;
 }
 
-/* Select */
+/* select */
 select{
-padding:12px 20px;
-border-radius:30px;
+padding:14px 25px;
+border-radius:40px;
 border:none;
 font-size:16px;
-margin:10px;
+margin-right:15px;
 }
 
-/* Sosyal ikonlar */
+/* sosyal medya */
 .social{
 position:absolute;
-bottom:80px;
+bottom:90px;
 display:flex;
-gap:40px;
+gap:45px;
+z-index:2;
 }
 
 .social a{
-color:gold;
-font-size:28px;
-text-decoration:none;
+color:#FFD700;
+font-size:30px;
 transition:0.3s;
 }
 
 .social a:hover{
-transform:scale(1.2);
-text-shadow:0 0 15px gold;
+transform:scale(1.3);
+text-shadow:0 0 20px #FFD700;
 }
 </style>
 
-<!-- Font Awesome -->
 <script src="https://kit.fontawesome.com/7d5a1f1b8f.js" crossorigin="anonymous"></script>
 
 </head>
@@ -123,7 +133,7 @@ text-shadow:0 0 15px gold;
 
 <h1>AstroLuck6</h1>
 
-<button class="glow-btn" onclick="alert('Kozmik sayı hesaplanıyor...')">
+<button class="glow-btn">
 Kozmik Sayıları Göster
 </button>
 
@@ -143,23 +153,16 @@ Kozmik Sayıları Göster
 <option>Balık</option>
 </select>
 
-<button class="glow-btn" onclick="burcSec()">
+<button class="glow-btn">
 Kozmik Sayıları Göster
 </button>
 </div>
 
 <div class="social">
-<a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-<a href="https://tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
-<a href="https://x.com" target="_blank"><i class="fab fa-x-twitter"></i></a>
+<a href="#"><i class="fab fa-instagram"></i></a>
+<a href="#"><i class="fab fa-tiktok"></i></a>
+<a href="#"><i class="fab fa-x-twitter"></i></a>
 </div>
-
-<script>
-function burcSec(){
-let burc=document.getElementById("burc").value;
-alert(burc+" burcu için kozmik sayı hesaplanıyor...");
-}
-</script>
 
 </body>
 </html>
