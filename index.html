@@ -5,15 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AstroLuck6</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  background:#0a001a;
+  background:radial-gradient(circle at top,#14002b,#070012 70%);
   color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
   text-align:center;
   overflow-x:hidden;
 }
@@ -24,34 +28,52 @@ body::before{
   position:fixed;
   width:200%;
   height:200%;
-  background:transparent url("https://www.transparenttextures.com/patterns/stardust.png");
-  animation:moveStars 60s linear infinite;
-  opacity:0.4;
+  background:url("https://www.transparenttextures.com/patterns/stardust.png");
+  animation:moveStars 80s linear infinite;
+  opacity:0.25;
   z-index:-1;
 }
 
 @keyframes moveStars{
   from{transform:translate(0,0);}
-  to{transform:translate(-500px,-500px);}
+  to{transform:translate(-600px,-600px);}
 }
 
+.container{
+  width:100%;
+  max-width:500px;
+}
+
+/* LOGO */
+.logo{
+  width:180px;
+  margin-bottom:20px;
+  filter:drop-shadow(0 0 20px gold);
+}
+
+/* BAŞLIK */
 h1{
-  margin-top:80px;
-  font-size:55px;
+  font-size:48px;
   color:gold;
-  text-shadow:0 0 30px gold;
+  text-shadow:0 0 25px gold;
+  margin-bottom:25px;
 }
 
-select,button{
-  padding:12px 20px;
-  border-radius:30px;
+/* SELECT */
+select{
+  padding:12px 18px;
+  border-radius:25px;
   border:none;
-  margin:10px;
   font-size:16px;
+  margin-bottom:20px;
 }
 
+/* BUTTON */
 button{
-  background:linear-gradient(45deg,#ffd700,#ffae00);
+  padding:14px 30px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(45deg,#ffd700,#ffb700);
   font-weight:600;
   cursor:pointer;
   box-shadow:0 0 20px rgba(255,215,0,0.7);
@@ -62,40 +84,42 @@ button:hover{
   transform:scale(1.08);
 }
 
+/* BALLS */
 #balls-container{
-  margin-top:40px;
+  margin-top:30px;
   display:flex;
   justify-content:center;
-  gap:15px;
+  gap:12px;
   flex-wrap:wrap;
 }
 
 .ball{
-  width:75px;
-  height:75px;
+  width:65px;
+  height:65px;
   border-radius:50%;
   background:radial-gradient(circle at 30% 30%,#fff8b0,gold 60%);
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:800;
-  font-size:22px;
+  font-size:20px;
   color:#330066;
-  box-shadow:0 0 25px gold;
-  animation:pulse 2s infinite alternate;
+  box-shadow:0 0 20px gold;
+  animation:pop 0.4s ease;
 }
 
-@keyframes pulse{
-  from{box-shadow:0 0 15px gold;}
-  to{box-shadow:0 0 35px #fff;}
+@keyframes pop{
+  from{transform:scale(0);}
+  to{transform:scale(1);}
 }
 
+/* SOCIAL */
 .social{
-  margin-top:60px;
+  margin-top:40px;
 }
 
 .social a{
-  font-size:30px;
+  font-size:26px;
   margin:0 15px;
   color:gold;
   transition:0.3s;
@@ -107,6 +131,11 @@ button:hover{
 </style>
 </head>
 <body>
+
+<div class="container">
+
+<!-- LOGO (buraya kendi logo dosya adını yaz) -->
+<img src="logo.png" class="logo" alt="AstroLuck6 Logo">
 
 <h1>AstroLuck6</h1>
 
@@ -125,6 +154,8 @@ button:hover{
 <option value="pisces">Balık</option>
 </select>
 
+<br>
+
 <button onclick="generateNumbers()">Kozmik Sayıları Göster</button>
 
 <div id="balls-container"></div>
@@ -133,6 +164,8 @@ button:hover{
 <a href="https://instagram.com/astroluck6" target="_blank"><i class="fab fa-instagram"></i></a>
 <a href="https://tiktok.com/@astroluck6" target="_blank"><i class="fab fa-tiktok"></i></a>
 <a href="https://twitter.com/astroluck6" target="_blank"><i class="fab fa-x-twitter"></i></a>
+</div>
+
 </div>
 
 <script>
