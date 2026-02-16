@@ -15,7 +15,7 @@ body{
   background:#0a001a;
   color:white;
   text-align:center;
-  overflow:hidden;
+  overflow-x:hidden;
 }
 
 /* yıldız efekti */
@@ -27,6 +27,7 @@ body::before{
   background:transparent url("https://www.transparenttextures.com/patterns/stardust.png");
   animation:moveStars 60s linear infinite;
   opacity:0.4;
+  z-index:-1;
 }
 
 @keyframes moveStars{
@@ -39,11 +40,6 @@ h1{
   font-size:55px;
   color:gold;
   text-shadow:0 0 30px gold;
-}
-
-.subtitle{
-  font-size:20px;
-  opacity:0.85;
 }
 
 select,button{
@@ -59,6 +55,7 @@ button{
   font-weight:600;
   cursor:pointer;
   box-shadow:0 0 20px rgba(255,215,0,0.7);
+  transition:0.3s;
 }
 
 button:hover{
@@ -112,10 +109,6 @@ button:hover{
 <body>
 
 <h1>AstroLuck6</h1>
-<button id="generateBtn">Kozmik Sayıları Göster</button>
-
-<div id="numbers"></div>
-
 
 <select id="zodiac">
 <option value="aries">Koç</option>
@@ -178,62 +171,3 @@ function generateNumbers(){
 
 </body>
 </html>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const btn = document.getElementById("generateBtn");
-  const numbersDiv = document.getElementById("numbers");
-
-  btn.addEventListener("click", function () {
-    numbersDiv.innerHTML = "";
-
-    let selectedNumbers = [];
-
-    while (selectedNumbers.length < 6) {
-      let num = Math.floor(Math.random() * 49) + 1;
-      if (!selectedNumbers.includes(num)) {
-        selectedNumbers.push(num);
-      }
-    }
-
-    selectedNumbers.sort((a, b) => a - b);
-
-    selectedNumbers.forEach(num => {
-      let ball = document.createElement("div");
-      ball.className = "ball";
-      ball.innerText = num;
-      numbersDiv.appendChild(ball);
-    });
-  });
-
-});
-</script>
-<div class="socials">
-  <a href="https://instagram.com/astroluck6" target="_blank">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg">
-  </a>
-
-  <a href="https://tiktok.com/@astroluck6" target="_blank">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg">
-  </a>
-
-  <a href="https://youtube.com/@astroluck6" target="_blank">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg">
-  </a>
-</div>
-.socials a {
-  display: inline-block;
-  margin: 15px;
-}
-
-.socials img {
-  width: 30px;
-  height: 30px;
-  filter: invert(1);
-  transition: 0.3s;
-}
-
-.socials img:hover {
-  transform: scale(1.2);
-}
