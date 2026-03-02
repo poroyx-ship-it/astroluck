@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AstroLuck6 | Ultra Premium Experience</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -13,39 +13,39 @@
             --gold: #FFD700;
             --premium-gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --accent-color: #FFD700;
-            --glass-bg: rgba(10, 14, 26, 0.85);
+            --glass-bg: rgba(10, 14, 26, 0.9);
         }
 
-        /* Sayfayı %100 her ekrana oturtan ayar */
+        /* Tüm ekranlarda tam sayfa garantisi */
+        * { box-sizing: border-box; }
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Kaydırma çubuğunu gizler */
+            background: #05070A;
+            overflow: hidden; /* Kaydırmayı engeller, her şey ekrana sığar */
         }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: #05070A;
-            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100vw;
-            height: 100vh;
+            color: white;
             text-align: center;
         }
 
-        /* Arka Plan Zodiac Wheel */
+        /* Arka Plan Zodiac Wheel - Ölçeklendirme Düzeltildi */
         .zodiac-wheel {
             position: fixed;
-            width: 100vh; /* Ekran yüksekliğine göre oranlanır */
-            height: 100vh;
+            width: 120vmin; /* Ekranın en küçük boyutuna göre oranlanır */
+            height: 120vmin;
             background: url('https://raw.githubusercontent.com/yigitsener/zodiac-assets/main/zodiac-wheel-gold.png') no-repeat center;
             background-size: contain;
-            opacity: 0.12;
+            opacity: 0.1;
             z-index: -1;
-            animation: rotateWheel 150s linear infinite;
+            animation: rotateWheel 180s linear infinite;
         }
 
         @keyframes rotateWheel {
@@ -53,131 +53,122 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Ana Panel */
+        /* Ana Panel - Mobilde geniş, Masaüstünde kontrollü */
         .container {
-            width: 90%;
-            max-width: 500px; /* Bilgisayarda çok yayılmasını engeller */
-            padding: 40px;
+            width: 92%;
+            max-width: 550px;
+            height: auto;
+            max-height: 95vh;
+            padding: 40px 20px;
             background: var(--glass-bg);
-            backdrop-filter: blur(30px);
+            backdrop-filter: blur(40px);
             border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 50px;
-            box-shadow: 0 0 100px rgba(0,0,0,0.9);
-            position: relative;
-            z-index: 1;
+            border-radius: 40px;
+            box-shadow: 0 0 80px rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
         }
 
         .logo {
-            width: 220px;
-            display: block;
-            margin: 0 auto 20px;
+            width: clamp(160px, 40vw, 240px); /* Mobilde 160px, Masaüstünde max 240px */
+            margin: 0 auto;
             filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
         }
 
         h1 {
-            font-size: 32px;
+            font-size: clamp(24px, 6vw, 36px);
             font-weight: 800;
-            letter-spacing: 3px;
             background: var(--premium-gold);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
+            margin: 0;
             text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        /* Burç Seçme Alanı - Kısaltıldı */
+        /* Burç Seçme Alanı - Genişlik Optimize Edildi */
         .select-wrapper {
-            position: relative;
-            width: 240px; /* Sabit ve zarif genişlik */
-            margin: 0 auto 30px;
+            width: 260px;
+            max-width: 80%;
+            margin: 0 auto;
         }
 
         select {
             width: 100%;
-            padding: 12px 15px;
-            border-radius: 15px;
+            padding: 14px;
+            border-radius: 20px;
             border: 2px solid var(--accent-color);
             background: #000;
             color: #FFF;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
-            outline: none;
             cursor: pointer;
             text-align-last: center;
-            transition: 0.4s;
         }
 
         /* Kozmik Buton */
         button {
-            padding: 14px 35px;
+            width: fit-content;
+            margin: 0 auto;
+            padding: 16px 32px;
             border: none;
             border-radius: 50px;
             background: var(--premium-gold);
-            background-size: 200% auto;
             color: #000;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
-            transition: 0.4s;
+            transition: 0.3s;
         }
 
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.5);
-        }
+        button:active { transform: scale(0.95); }
 
-        /* Toplar - Tek Sıra */
+        /* Toplar - Tek Sıra ve Ölçeklenebilir */
         #balls-container {
-            margin-top: 40px;
             display: flex;
             justify-content: center;
-            gap: 10px;
-            min-height: 60px; /* Boşken yer kaplaması için */
+            gap: 8px;
+            min-height: 70px;
         }
 
         .ball {
-            width: 55px;
-            height: 55px;
+            width: clamp(45px, 12vw, 65px);
+            height: clamp(45px, 12vw, 65px);
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #FFF, var(--accent-color) 55%, #000);
+            background: radial-gradient(circle at 35% 35%, #FFF, var(--accent-color) 60%, #000);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 20px;
+            font-size: clamp(16px, 4vw, 22px);
             color: #000;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
-            animation: cosmicPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
 
-        @keyframes cosmicPop {
+        @keyframes popIn {
             0% { transform: scale(0); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
 
         .social {
-            margin-top: 35px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .social a {
-            font-size: 26px;
-            margin: 0 15px;
+            font-size: 28px;
+            margin: 0 20px;
             color: var(--gold);
             transition: 0.3s;
         }
 
-        .social a:hover { transform: scale(1.2); color: #FFF; }
-
-        /* Tablet ve Mobil için Ekran Uyumu */
-        @media (max-width: 600px) {
-            .container { padding: 30px 15px; }
-            .ball { width: 45px; height: 45px; font-size: 16px; }
-            .logo { width: 180px; }
-            h1 { font-size: 24px; }
+        /* Mobil İçin İnce Ayar */
+        @media (max-height: 700px) {
+            .container { padding: 20px; gap: 10px; }
+            .logo { width: 140px; }
         }
     </style>
 </head>
@@ -219,53 +210,33 @@
 
 <script>
 const colorPalette = {
-    aries: "#FF4136", taurus: "#2ECC40", gemini: "#FFDC00",
-    cancer: "#DDDDDD", leo: "#FF851B", virgo: "#85144b",
-    libra: "#F012BE", scorpio: "#FF0000", sagittarius: "#B10DC9",
-    capricorn: "#3D9970", aquarius: "#7FDBFF", pisces: "#39CCCC"
+    aries: "#FF4136", taurus: "#2ECC40", gemini: "#FFDC00", cancer: "#DDDDDD",
+    leo: "#FF851B", virgo: "#85144b", libra: "#F012BE", scorpio: "#FF0000",
+    sagittarius: "#B10DC9", capricorn: "#3D9970", aquarius: "#7FDBFF", pisces: "#39CCCC"
 };
 
 function updateTheme() {
     const zodiac = document.getElementById("zodiac").value;
-    if (zodiac) {
-        document.documentElement.style.setProperty('--accent-color', colorPalette[zodiac]);
-    }
-}
-
-function getSeed(zodiac){
-    const today = new Date();
-    return today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate() + zodiac.length;
-}
-
-function seededRandom(seed){
-    const x = Math.sin(seed) * 10000;
-    return x - Math.floor(x);
+    if (zodiac) document.documentElement.style.setProperty('--accent-color', colorPalette[zodiac]);
 }
 
 function generateNumbers(){
     const zodiac = document.getElementById("zodiac").value;
-    if(!zodiac) { alert("Burç seçmelisiniz!"); return; }
+    if(!zodiac) return alert("Lütfen burç seçin!");
     
     const container = document.getElementById("balls-container");
     container.innerHTML = "";
     
-    let seed = getSeed(zodiac);
     let numbers = new Set();
-    let i = 0;
+    while(numbers.size < 6) numbers.add(Math.floor(Math.random() * 49) + 1);
     
-    while(numbers.size < 6){
-        let num = Math.floor(seededRandom(seed + i) * 49) + 1;
-        numbers.add(num);
-        i++;
-    }
-    
-    Array.from(numbers).sort((a,b)=>a-b).forEach((n, index) => {
+    Array.from(numbers).sort((a,b)=>a-b).forEach((n, i) => {
         setTimeout(() => {
-            let ball = document.createElement("div");
-            ball.className = "ball";
-            ball.textContent = n;
-            container.appendChild(ball);
-        }, index * 120);
+            let b = document.createElement("div");
+            b.className = "ball";
+            b.textContent = n;
+            container.appendChild(b);
+        }, i * 120);
     });
 }
 </script>
