@@ -200,12 +200,50 @@
 
     <div id="balls-container"></div>
 
-    <div class="social">
-        <a href="https://instagram.com/astroluck6" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://tiktok.com/@astroluck6" target="_blank"><i class="fab fa-tiktok"></i></a>
-        <a href="https://twitter.com/astroluck6" target="_blank"><i class="fab fa-x-twitter"></i></a>
-    </div>
+    <<div class="social">
+    <a href="https://instagram.com/astroluck6" target="_blank" class="insta"><i class="fab fa-instagram"></i></a>
+    <a href="https://facebook.com/astroluck6" target="_blank" class="fb"><i class="fab fa-facebook"></i></a>
+    <a href="https://tiktok.com/@astroluck6" target="_blank" class="tt"><i class="fab fa-tiktok"></i></a>
 </div>
+
+<style>
+    /* Sosyal Medya İkonları İçin Özel Renkler */
+    .social {
+        margin-top: 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 20px;
+    }
+
+    .social a {
+        font-size: 28px; /* İkonları biraz daha büyüttük */
+        margin: 0 20px;
+        color: rgba(255, 215, 0, 0.6); /* Varsayılan altın rengi */
+        text-decoration: none;
+        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: inline-block;
+    }
+
+    /* Instagram Hover - Gradyan Efekti */
+    .social a.insta:hover {
+        color: #E1306C;
+        transform: translateY(-5px) scale(1.2);
+        filter: drop-shadow(0 0 10px #E1306C);
+    }
+
+    /* Facebook Hover - Mavi Efekt */
+    .social a.fb:hover {
+        color: #1877F2;
+        transform: translateY(-5px) scale(1.2);
+        filter: drop-shadow(0 0 10px #1877F2);
+    }
+
+    /* TikTok Hover - Siyah/Beyaz Efekt */
+    .social a.tt:hover {
+        color: #00f2ea;
+        transform: translateY(-5px) scale(1.2);
+        filter: drop-shadow(0 0 10px #ff0050);
+    }
+</style>
 
 <script>
 /* Seeded Random Mantığını Korumalıyız */
@@ -249,3 +287,4 @@ function generateNumbers(){
 
 </body>
 </html>
+
