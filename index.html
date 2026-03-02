@@ -24,12 +24,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: 100vh; /* Tam sayfa görünümü */
             text-align: center;
             overflow: hidden;
         }
 
-        /* Yavaş Dönem Burç Çarkı (Zodiac Wheel) */
+        /* Yavaş Dönem Burç Çarkı (Zodiac Wheel) Arka Planı */
         .zodiac-wheel {
             position: fixed;
             width: 800px;
@@ -61,7 +61,7 @@
 
         /* LOGO - Güçlü Ölçeklendirme */
         .logo {
-            width: 280px; /* Daha büyük ve dominant */
+            width: 280px; /* Daha büyük logo */
             display: block;
             margin: 0 auto 30px;
             filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.3));
@@ -81,10 +81,10 @@
             text-transform: uppercase;
         }
 
-        /* SELECT ALANI - Okunabilirlik Maksimum */
+        /* PREMIUM BURÇ SEÇİM ALANI (SELECT) */
         .select-wrapper {
             position: relative;
-            width: 70%;
+            width: 70%; /* Kısaltıldı ve orantılı hale getirildi */
             margin: 0 auto 35px;
         }
 
@@ -92,16 +92,22 @@
             width: 100%;
             padding: 18px 25px;
             border-radius: 25px;
-            border: 2px solid var(--accent-color);
-            background: #000; /* Siyah arka plan ile tam okunabilirlik */
-            color: var(--gold); /* Altın yazı rengi */
+            border: 2px solid var(--accent-color); /* Dinamik renk */
+            background: #000; /* Okunabilirlik için tam siyah arka plan */
+            color: #FFF; /* Tam beyaz yazı rengi */
             font-size: 20px;
             font-weight: 600;
             outline: none;
             cursor: pointer;
             appearance: none;
-            text-align-last: center;
+            text-align-last: center; /* Yazıyı ortalar */
             transition: 0.4s;
+            box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.1);
+        }
+
+        select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
 
         /* BUTON */
@@ -109,8 +115,8 @@
             padding: 18px 45px;
             border: none;
             border-radius: 50px;
-            background: var(--accent-color);
-            background: linear-gradient(45deg, #BF953F, #FCF6BA, #AA771C);
+            background: var(--premium-gold); /* Metalik gradyan */
+            background-size: 200% auto;
             color: #000;
             font-weight: 800;
             text-transform: uppercase;
@@ -118,11 +124,16 @@
             cursor: pointer;
             box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
             transition: 0.4s;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
         }
 
         button:hover {
             transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(var(--accent-rgb), 0.6);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.6);
         }
 
         /* TOPLAR - Tek Sıra 6 Adet */
@@ -139,14 +150,14 @@
             width: 65px;
             height: 65px;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #FFF, var(--accent-color) 50%, #000);
+            background: radial-gradient(circle at 35% 35%, #FFF, var(--accent-color) 50%, #000); /* Dinamik renk parlaması */
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
             font-size: 24px;
             color: #000;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            box-shadow: inset -4px -4px 8px rgba(0,0,0,0.4), 0 10px 20px rgba(var(--accent-rgb), 0.3); /* Dinamik renkli gölge */
             animation: cosmicPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
 
@@ -178,6 +189,8 @@
             #balls-container { gap: 5px; }
             .ball { width: 50px; height: 50px; font-size: 18px; }
             .logo { width: 200px; }
+            .select-wrapper { width: 90%; }
+            h1 { font-size: 28px; }
         }
     </style>
 </head>
@@ -220,22 +233,28 @@
 <script>
 // Burç Renk Haritası
 const colorPalette = {
-    aries: "#FF4136", taurus: "#2ECC40", gemini: "#FFDC00",
-    cancer: "#DDDDDD", leo: "#FF851B", virgo: "#85144b",
-    libra: "#F012BE", scorpio: "#85144b", sagittarius: "#B10DC9",
-    capricorn: "#3D9970", aquarius: "#7FDBFF", pisces: "#39CCCC"
+    aries: { hex: "#FF4136", rgb: "255, 65, 54" }, taurus: { hex: "#2ECC40", rgb: "46, 204, 64" }, gemini: { hex: "#FFDC00", rgb: "255, 220, 0" },
+    cancer: { hex: "#DDDDDD", rgb: "221, 221, 221" }, leo: { hex: "#FF851B", rgb: "255, 133, 27" }, virgo: { hex: "#85144b", rgb: "133, 20, 75" },
+    libra: { hex: "#F012BE", rgb: "240, 18, 190" }, scorpio: { hex: "#FF0000", rgb: "255, 0, 0" }, sagittarius: { hex: "#B10DC9", rgb: "177, 13, 201" },
+    capricorn: { hex: "#3D9970", rgb: "61, 153, 112" }, aquarius: { hex: "#7FDBFF", rgb: "127, 219, 255" }, pisces: { hex: "#39CCCC", rgb: "57, 204, 204" }
 };
 
+// Temayı burca göre günceller
 function updateTheme() {
     const zodiac = document.getElementById("zodiac").value;
-    const color = colorPalette[zodiac] || "#FFD700";
-    document.documentElement.style.setProperty('--accent-color', color);
+    if (zodiac && colorPalette[zodiac]) {
+        const theme = colorPalette[zodiac];
+        document.documentElement.style.setProperty('--accent-color', theme.hex);
+        document.documentElement.style.setProperty('--accent-rgb', theme.rgb);
+    }
 }
 
+// Tohumlama mantığını korur
 function getSeed(zodiac){
     const today = new Date();
-    return today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate() + 
-           zodiac.split('').reduce((a,b) => a + b.charCodeAt(0), 0);
+    let base = today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate();
+    let zodiacValue = zodiac.split('').reduce((a,b) => a + b.charCodeAt(0), 0);
+    return base + zodiacValue;
 }
 
 function seededRandom(seed){
@@ -243,9 +262,10 @@ function seededRandom(seed){
     return x - Math.floor(x);
 }
 
+// Kozmik sayıları butonla oluşturur
 function generateNumbers(){
     const zodiac = document.getElementById("zodiac").value;
-    if(!zodiac) { alert("Lütfen burcunuzu seçin!"); return; }
+    if(!zodiac) { alert("Lütfen önce burcunuzu seçin!"); return; }
     
     const container = document.getElementById("balls-container");
     container.innerHTML = "";
@@ -254,6 +274,7 @@ function generateNumbers(){
     let numbers = new Set();
     let i = 0;
     
+    // 1 ile 49 arasında 6 adet tekil sayı üretir
     while(numbers.size < 6){
         let num = Math.floor(seededRandom(seed + i) * 49) + 1;
         numbers.add(num);
@@ -266,7 +287,7 @@ function generateNumbers(){
             ball.className = "ball";
             ball.textContent = n;
             container.appendChild(ball);
-        }, index * 150);
+        }, index * 150); // Topların sırayla gelme efekti
     });
 }
 </script>
