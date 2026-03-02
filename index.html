@@ -2,8 +2,8 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AstroLuck6 | Ultra Premium Experience</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroLuck6 | Kozmik Mistik Deneyim</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -12,40 +12,51 @@
         :root {
             --gold: #FFD700;
             --premium-gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --accent-color: #FFD700;
-            --glass-bg: rgba(10, 14, 26, 0.9);
-        }
-
-        /* Tüm ekranlarda tam sayfa garantisi */
-        * { box-sizing: border-box; }
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background: #05070A;
-            overflow: hidden; /* Kaydırmayı engeller, her şey ekrana sığar */
+            --accent-color: #FFD700; /* Dinamik olarak değişecek */
+            --glass-bg: rgba(10, 14, 26, 0.85);
         }
 
         body {
+            margin: 0;
             font-family: 'Poppins', sans-serif;
+            background: #05070A; /* Derin siyah arka plan */
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100vw;
-            color: white;
+            min-height: 100vh;
             text-align: center;
+            overflow: hidden; /* Kaydırma çubuğunu gizler */
+            position: relative;
         }
 
-        /* Arka Plan Zodiac Wheel - Ölçeklendirme Düzeltildi */
+        /* Mistik Arka Plan Yıldız Efekti (Stardust) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: url("https://www.transparenttextures.com/patterns/stardust.png");
+            animation: moveStars 120s linear infinite; /* Yavaşça hareket eden yıldızlar */
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        @keyframes moveStars {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 1000px; }
+        }
+
+        /* Yavaş Dönem Burç Çarkı (Zodiac Wheel) */
         .zodiac-wheel {
             position: fixed;
-            width: 120vmin; /* Ekranın en küçük boyutuna göre oranlanır */
-            height: 120vmin;
+            width: 800px;
+            height: 800px;
             background: url('https://raw.githubusercontent.com/yigitsener/zodiac-assets/main/zodiac-wheel-gold.png') no-repeat center;
             background-size: contain;
-            opacity: 0.1;
+            opacity: 0.15;
             z-index: -1;
-            animation: rotateWheel 180s linear infinite;
+            animation: rotateWheel 120s linear infinite;
         }
 
         @keyframes rotateWheel {
@@ -53,122 +64,151 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Ana Panel - Mobilde geniş, Masaüstünde kontrollü */
         .container {
-            width: 92%;
-            max-width: 550px;
-            height: auto;
-            max-height: 95vh;
-            padding: 40px 20px;
+            width: 95%;
+            max-width: 600px;
+            padding: 60px 30px;
             background: var(--glass-bg);
-            backdrop-filter: blur(40px);
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 40px;
-            box-shadow: 0 0 80px rgba(0,0,0,0.9);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 20px;
+            border-radius: 60px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 1;
         }
 
+        /* LOGO - Güçlü Ölçeklendirme */
         .logo {
-            width: clamp(160px, 40vw, 240px); /* Mobilde 160px, Masaüstünde max 240px */
-            margin: 0 auto;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+            width: 280px; /* Dominant logo boyutu */
+            display: block;
+            margin: 0 auto 30px;
+            filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.3));
+            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        
+        .logo:hover { transform: scale(1.08) rotate(-2deg); }
 
         h1 {
-            font-size: clamp(24px, 6vw, 36px);
+            font-size: 38px;
             font-weight: 800;
+            letter-spacing: 4px;
             background: var(--premium-gold);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 0;
+            margin-bottom: 40px;
             text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
-        /* Burç Seçme Alanı - Genişlik Optimize Edildi */
+        /* PREMIUM BURÇ SEÇİM ALANI (SELECT) */
         .select-wrapper {
-            width: 260px;
-            max-width: 80%;
-            margin: 0 auto;
+            position: relative;
+            width: 70%; /* Kısaltıldı ve orantılı hale getirildi */
+            margin: 0 auto 35px;
         }
 
         select {
             width: 100%;
-            padding: 14px;
-            border-radius: 20px;
-            border: 2px solid var(--accent-color);
-            background: #000;
-            color: #FFF;
-            font-size: 18px;
+            padding: 18px 25px;
+            border-radius: 25px;
+            border: 2px solid var(--accent-color); /* Dinamik renk */
+            background: #000; /* Okunabilirlik için tam siyah arka plan */
+            color: #FFF; /* Tam beyaz yazı rengi */
+            font-size: 20px;
             font-weight: 600;
+            outline: none;
             cursor: pointer;
-            text-align-last: center;
+            appearance: none;
+            text-align-last: center; /* Yazıyı ortalar */
+            transition: 0.4s;
+            box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.1);
         }
 
-        /* Kozmik Buton */
+        select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        /* BUTON */
         button {
-            width: fit-content;
-            margin: 0 auto;
-            padding: 16px 32px;
+            padding: 18px 45px;
             border: none;
             border-radius: 50px;
-            background: var(--premium-gold);
+            background: var(--premium-gold); /* Metalik gradyan */
+            background-size: 200% auto;
             color: #000;
             font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 2px;
             cursor: pointer;
-            transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            transition: 0.4s;
+            animation: shine 3s linear infinite;
         }
 
-        button:active { transform: scale(0.95); }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
 
-        /* Toplar - Tek Sıra ve Ölçeklenebilir */
+        button:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.6);
+        }
+
+        /* TOPLAR - Tek Sıra 6 Adet */
         #balls-container {
+            margin-top: 50px;
             display: flex;
             justify-content: center;
-            gap: 8px;
-            min-height: 70px;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: nowrap; /* Tek sıra garantisi */
         }
 
         .ball {
-            width: clamp(45px, 12vw, 65px);
-            height: clamp(45px, 12vw, 65px);
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #FFF, var(--accent-color) 60%, #000);
+            background: radial-gradient(circle at 35% 35%, #FFF, var(--accent-color) 50%, #000); /* Dinamik renk parlaması */
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: clamp(16px, 4vw, 22px);
+            font-size: 24px;
             color: #000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+            box-shadow: inset -4px -4px 8px rgba(0,0,0,0.4), 0 10px 20px rgba(var(--accent-rgb), 0.3); /* Dinamik renkli gölge */
+            animation: cosmicPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes cosmicPop {
+            0% { transform: scale(0) translateY(50px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
         }
 
+        /* SOSYAL MEDYA */
         .social {
-            padding-top: 20px;
+            margin-top: 50px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
         }
 
         .social a {
-            font-size: 28px;
-            margin: 0 20px;
+            font-size: 32px;
+            margin: 0 25px;
             color: var(--gold);
-            transition: 0.3s;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
         }
 
-        /* Mobil İçin İnce Ayar */
-        @media (max-height: 700px) {
-            .container { padding: 20px; gap: 10px; }
-            .logo { width: 140px; }
+        .social a.insta:hover { color: #E1306C; transform: scale(1.3); filter: drop-shadow(0 0 15px #E1306C); }
+        .social a.fb:hover { color: #1877F2; transform: scale(1.3); filter: drop-shadow(0 0 15px #1877F2); }
+
+        /* Mobil Düzenleme */
+        @media (max-width: 600px) {
+            #balls-container { gap: 5px; }
+            .ball { width: 50px; height: 50px; font-size: 18px; }
+            .logo { width: 200px; }
+            .select-wrapper { width: 90%; }
+            h1 { font-size: 28px; }
         }
     </style>
 </head>
@@ -177,7 +217,7 @@
 <div class="zodiac-wheel"></div>
 
 <div class="container">
-    <img src="logo.png" class="logo" alt="Logo">
+    <img src="logo.png" class="logo" alt="AstroLuck6 Logo">
     <h1>AstroLuck6</h1>
 
     <div class="select-wrapper">
@@ -198,49 +238,77 @@
         </select>
     </div>
 
-    <button onclick="generateNumbers()">Kozmik Sayıları Göster</button>
+    <button onclick="generateNumbers()">Kozmik Sayıları Oku</button>
 
     <div id="balls-container"></div>
 
     <div class="social">
-        <a href="https://www.instagram.com/astroluck.6/" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.facebook.com/profile.php?id=61588426601694&sk=followers" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/astroluck.6/" target="_blank" class="insta"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61588426601694&sk=followers" target="_blank" class="fb"><i class="fab fa-facebook"></i></a>
     </div>
 </div>
 
 <script>
+// Burç Renk Haritası
 const colorPalette = {
-    aries: "#FF4136", taurus: "#2ECC40", gemini: "#FFDC00", cancer: "#DDDDDD",
-    leo: "#FF851B", virgo: "#85144b", libra: "#F012BE", scorpio: "#FF0000",
-    sagittarius: "#B10DC9", capricorn: "#3D9970", aquarius: "#7FDBFF", pisces: "#39CCCC"
+    aries: { hex: "#FF4136", rgb: "255, 65, 54" }, taurus: { hex: "#2ECC40", rgb: "46, 204, 64" }, gemini: { hex: "#FFDC00", rgb: "255, 220, 0" },
+    cancer: { hex: "#DDDDDD", rgb: "221, 221, 221" }, leo: { hex: "#FF851B", rgb: "255, 133, 27" }, virgo: { hex: "#85144b", rgb: "133, 20, 75" },
+    libra: { hex: "#F012BE", rgb: "240, 18, 190" }, scorpio: { hex: "#FF0000", rgb: "255, 0, 0" }, sagittarius: { hex: "#B10DC9", rgb: "177, 13, 201" },
+    capricorn: { hex: "#3D9970", rgb: "61, 153, 112" }, aquarius: { hex: "#7FDBFF", rgb: "127, 219, 255" }, pisces: { hex: "#39CCCC", rgb: "57, 204, 204" }
 };
 
+// Temayı burca göre günceller
 function updateTheme() {
     const zodiac = document.getElementById("zodiac").value;
-    if (zodiac) document.documentElement.style.setProperty('--accent-color', colorPalette[zodiac]);
+    if (zodiac && colorPalette[zodiac]) {
+        const theme = colorPalette[zodiac];
+        document.documentElement.style.setProperty('--accent-color', theme.hex);
+        document.documentElement.style.setProperty('--accent-rgb', theme.rgb);
+    }
 }
 
+// Tohumlama mantığını korur
+function getSeed(zodiac){
+    const today = new Date();
+    let base = today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate();
+    let zodiacValue = zodiac.split('').reduce((a,b) => a + b.charCodeAt(0), 0);
+    return base + zodiacValue;
+}
+
+function seededRandom(seed){
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+}
+
+// Kozmik sayıları butonla oluşturur
 function generateNumbers(){
     const zodiac = document.getElementById("zodiac").value;
-    if(!zodiac) return alert("Lütfen burç seçin!");
+    if(!zodiac) { alert("Lütfen önce burcunuzu seçin!"); return; }
     
     const container = document.getElementById("balls-container");
     container.innerHTML = "";
     
+    let seed = getSeed(zodiac);
     let numbers = new Set();
-    while(numbers.size < 6) numbers.add(Math.floor(Math.random() * 49) + 1);
+    let i = 0;
     
-    Array.from(numbers).sort((a,b)=>a-b).forEach((n, i) => {
+    // 1 ile 49 arasında 6 adet tekil sayı üretir
+    while(numbers.size < 6){
+        let num = Math.floor(seededRandom(seed + i) * 49) + 1;
+        numbers.add(num);
+        i++;
+    }
+    
+    Array.from(numbers).sort((a,b)=>a-b).forEach((n, index) => {
         setTimeout(() => {
-            let b = document.createElement("div");
-            b.className = "ball";
-            b.textContent = n;
-            container.appendChild(b);
-        }, i * 120);
+            let ball = document.createElement("div");
+            ball.className = "ball";
+            ball.textContent = n;
+            container.appendChild(ball);
+        }, index * 150); // Topların sırayla gelme efekti
     });
 }
 </script>
 
 </body>
 </html>
-
