@@ -230,20 +230,32 @@ const colorPalette = {
     sagittarius: "#B10DC9", capricorn: "#3D9970", aquarius: "#7FDBFF", pisces: "#39CCCC"
 };
 
-function updateTheme() {
-    const zodiac = document.getElementById("zodiac").value;
-    if (zodiac) document.documentElement.style.setProperty('--accent-color', colorPalette[zodiac]);
-}
-
-function generateNumbers(){
+function generateNumbers() {
     const zodiac = document.getElementById("zodiac").value;
     if(!zodiac) return alert("Lütfen önce burcunuzu seçin!");
     
     const container = document.getElementById("balls-container");
     container.innerHTML = "";
     
+    // Tarih ve Burç ismini birleştirerek sabit bir "tohum" oluşturuyoruz
+    const today = new Date().toISOString().slice(0, 10); // Örn: 2024-05-20
+    const seed = today + zodiac;
+    
+    // Basit bir matematiksel karıştırıcı (Sayıları sabitlemek için)
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+        hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+        hash |= 0;
+    }
+
     let numbers = new Set();
-    while(numbers.size < 6) numbers.add(Math.floor(Math.random() * 49) + 1);
+    let counter = 0;
+    while(numbers.size < 6) {
+        // Her seferinde aynı sonucu veren rastgele sayı üretimi
+        let x = Math.abs(Math.sin(hash + counter++) * 10000);
+        let num = Math.floor((x % 49)) + 1;
+        numbers.add(num);
+    }
     
     Array.from(numbers).sort((a,b)=>a-b).forEach((n, i) => {
         setTimeout(() => {
@@ -258,4 +270,5 @@ function generateNumbers(){
 
 </body>
 </html>
+
 
