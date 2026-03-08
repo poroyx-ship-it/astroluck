@@ -232,22 +232,61 @@ const colorPalette = {
 
 async function generateNumbers() {
     const zodiac = document.getElementById("zodiac").value;
+    const zodiacNames = {
+        aries: "Koç", taurus: "Boğa", gemini: "İkizler", cancer: "Yengeç",
+        leo: "Aslan", virgo: "Başak", libra: "Terazi", scorpio: "Akrep",
+        sagittarius: "Yay", capricorn: "Oğlak", aquarius: "Kova", pisces: "Balık"
+    };
+    
     if(!zodiac) return alert("Lütfen önce burcunuzu seçin!");
     
-    // Google Sheets'ten veriyi çekiyoruz (Örn: Bir API veya Sheets URL'si üzerinden)
-    const response = await fetch('GOOGLE_SHEETS_JSON_URL_BURAYA');
-    const data = await response.json();
-    
-    // Bugüne ve seçilen burca ait satırı bul
-    const today = new Date().toISOString().slice(0, 10);
-    const row = data.find(r => r.Tarih === today && r.Burc === zodiac);
+    const container = document.getElementById("balls-container");
+    container.innerHTML = "<p style='color: gold;'>Kozmik veriler yükleniyor...</p>";
 
-    if(row) {
-        // Sayıları göster
-        displayBalls(row.Sayilar);
-        // Yorumu göster
-        document.getElementById("horoscope-comment").innerText = row.Yorum;
+    try {
+        // https://docs.google.com/spreadsheets/d/e/2PACX-1vRSiV2H3ncrcjaAPs4gRVnf9rd5_f3Uek3-Xn_e13kDivFqIQ7dInPM3szayR-EMJa6SIk-6yv8CCQf/pub?gid=0&single=true&output=csv
+        const csvUrl = 'SENİN_GOOGLE_SHEETS_CSV_LINKİN_BURAYA';
+        const response = await fetch(csvUrl);
+        const data = await response.text();
+        
+        // CSV'yi satırlara bölüyoruz
+        const rows = data.split('\n').map(row => row.split(','));
+        const today = new Date().toLocaleDateString('tr-TR'); // GG.AA.YYYY formatı
+        
+        // Bugünün tarihine ve seçilen burca ait satırı bul
+        const targetRow = rows.find(r => r[1] === zodiacNames[zodiac]);
+
+        if (targetRow) {
+            const sayilar = targetRow[2].replace(/"/g, '').split('-').map(Number);
+            const yorum = targetRow[3].replace(/"/g, '');
+
+            container.innerHTML = "";
+            sayilar.sort((a,b)=>a-b).forEach((n, i) => {
+                setTimeout(() => {
+                    let b = document.createElement("div");
+                    b.className = "ball"; b.textContent = n;
+                    container.appendChild(b);
+                }, i * 150);
+            });
+
+            // Yorumu göster (Eğer HTML'de yorum ID'li bir div varsa)
+            let commentBox = document.getElementById("horoscope-comment");
+            if(!commentBox) {
+                commentBox = document.createElement("div");
+                commentBox.id = "horoscope-comment";
+                commentBox.style = "margin-top:20px; color:#FFD700; font-style:italic; padding:15px; border-top:1px solid rgba(255,215,0,0.2);";
+                container.parentNode.appendChild(commentBox);
+            }
+            commentBox.innerText = yorum;
+
+        } else {
+            container.innerHTML = "<p>Bugünün şanslı sayıları henüz hazır değil, lütfen az sonra tekrar deneyin.</p>";
+        }
+    } catch (error) {
+        console.error("Veri çekme hatası:", error);
+        container.innerHTML = "<p>Kozmik bir bağlantı sorunu oluştu.</p>";
     }
+}
 
     let numbers = new Set();
     let counter = 0;
@@ -271,6 +310,7 @@ async function generateNumbers() {
 
 </body>
 </html>
+
 
 
 
