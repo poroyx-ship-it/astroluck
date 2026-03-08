@@ -230,22 +230,23 @@ const colorPalette = {
     sagittarius: "#B10DC9", capricorn: "#3D9970", aquarius: "#7FDBFF", pisces: "#39CCCC"
 };
 
-function generateNumbers() {
+async function generateNumbers() {
     const zodiac = document.getElementById("zodiac").value;
     if(!zodiac) return alert("Lütfen önce burcunuzu seçin!");
     
-    const container = document.getElementById("balls-container");
-    container.innerHTML = "";
+    // Google Sheets'ten veriyi çekiyoruz (Örn: Bir API veya Sheets URL'si üzerinden)
+    const response = await fetch('GOOGLE_SHEETS_JSON_URL_BURAYA');
+    const data = await response.json();
     
-    // Tarih ve Burç ismini birleştirerek sabit bir "tohum" oluşturuyoruz
-    const today = new Date().toISOString().slice(0, 10); // Örn: 2024-05-20
-    const seed = today + zodiac;
-    
-    // Basit bir matematiksel karıştırıcı (Sayıları sabitlemek için)
-    let hash = 0;
-    for (let i = 0; i < seed.length; i++) {
-        hash = ((hash << 5) - hash) + seed.charCodeAt(i);
-        hash |= 0;
+    // Bugüne ve seçilen burca ait satırı bul
+    const today = new Date().toISOString().slice(0, 10);
+    const row = data.find(r => r.Tarih === today && r.Burc === zodiac);
+
+    if(row) {
+        // Sayıları göster
+        displayBalls(row.Sayilar);
+        // Yorumu göster
+        document.getElementById("horoscope-comment").innerText = row.Yorum;
     }
 
     let numbers = new Set();
@@ -270,5 +271,6 @@ function generateNumbers() {
 
 </body>
 </html>
+
 
 
