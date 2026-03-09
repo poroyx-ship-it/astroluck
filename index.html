@@ -227,92 +227,37 @@
 </div>
 
 <script>
-// 1. RENK PALETİ
-const colorPalette = {
-    aries: "#FF4136", taurus: "#2ECC40", gemini: "#FFDC00", cancer: "#DDDDDD",
-    leo: "#FF851B", virgo: "#85144b", libra: "#F012BE", scorpio: "#FF0000",
-    sagittarius: "#B10DC9", capricorn: "#3D9970", aquarius: "#7FDBFF", pisces: "#39CCCC"
-};
-
-// 2. TEMA GÜNCELLEME
-function updateTheme() {
-    const zodiac = document.getElementById("zodiac").value;
-    const color = colorPalette[zodiac];
-    if(color) {
-        document.querySelector('.container').style.borderColor = color;
-        document.getElementById("zodiac").style.borderColor = color;
-    }
-}
-
-// 3. ANA FONKSİYON (SAYI ÜRETİCİ)
-async function generateNumbers() {
-    console.log("Fonksiyon tetiklendi..."); // Kontrol 1
-    const zodiac = document.getElementById("zodiac").value;
-    const container = document.getElementById("balls-container");
-    const commentBox = document.getElementById("horoscope-comment");
-    
-    if(!zodiac) {
-        alert("Lütfen önce bir burç seçiniz!");
-        return;
-    }
-
-    // Ekranı temizle
-    container.innerHTML = "";
-    commentBox.innerText = "Kozmik enerjiler hesaplanıyor...";
-
-    // MATEMATİKSEL HESAPLAMA (Make.com ile birebir aynı)
-    const day = new Date().getDate(); 
+function generateNumbers() {
+    const zodiac = document.getElementById("zodiac").value; // Burç seçimi
+    const container = document.getElementById("balls-container"); // Sayıların görüneceği kutu
+    const day = new Date().getDate();
     const zLen = zodiac.length;
+    
+    // Make.com ile AYNI matematik
     const multipliers = [7, 13, 19, 25, 31, 37];
     const adds = [3, 5, 8, 11, 14, 17];
     
     let numbers = [];
     for (let i = 0; i < 6; i++) {
-        // % 49 + 1 kuralı: 1 ile 49 arası sayı üretir
         let n = ((day * multipliers[i] + zLen * adds[i]) % 49) + 1;
-        // Aynı sayı çıkarsa +1 ekleyerek benzersiz yap
+        // Benzersizlik kontrolü
         while(numbers.includes(n)) { n = (n % 49) + 1; }
         numbers.push(n);
     }
     numbers.sort((a, b) => a - b);
-    console.log("Üretilen Sayılar:", numbers); // Kontrol 2
 
-    // TOPLARI EKRANA ÇİZ
-    numbers.forEach((num, index) => {
-        setTimeout(() => {
-            const ball = document.createElement("div");
-            ball.className = "ball";
-            ball.innerText = num;
-            container.appendChild(ball);
-            console.log(num + " numaralı top eklendi."); // Kontrol 3
-        }, index * 200);
+    // Ekrana Basma Kısmı
+    container.innerHTML = ""; // Önceki sayıları temizle
+    numbers.forEach(num => {
+        const ball = document.createElement("div");
+        ball.className = "ball";
+        ball.innerText = num;
+        container.appendChild(ball); // İşte sayıları ekrana burada ekliyoruz!
     });
-
-    // GOOGLE SHEETS YORUMU (Hata alsa bile sayıları bozmaz)
-    try {
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRSiV2H3ncrcjaAPs4gRVnf9rd5_f3Uek3-Xn_e13kDivFqIQ7dInPM3szayR-EMJa6SIk-6yv8CCQf/pub?gid=0&single=true&output=csv';
-        const response = await fetch(csvUrl);
-        const data = await response.text();
-        const rows = data.split('\n').map(row => row.split(','));
-        
-        const zodiacNames = {
-            aries: "Koç", taurus: "Boğa", gemini: "İkizler", cancer: "Yengeç",
-            leo: "Aslan", virgo: "Başak", libra: "Terazi", scorpio: "Akrep",
-            sagittarius: "Yay", capricorn: "Oğlak", aquarius: "Kova", pisces: "Balık"
-        };
-
-        const targetRow = rows.find(r => r[1] && r[1].trim() === zodiacNames[zodiac]);
-        if (targetRow && targetRow[3]) {
-            commentBox.innerText = targetRow[3].replace(/"/g, '');
-        } else {
-            commentBox.innerText = "Yıldızlar bugün şansının açık olduğunu söylüyor!";
-        }
-    } catch (e) {
-        console.log("Yorum çekilemedi ama sayılar tamam.");
-        commentBox.innerText = "Şanslı sayıların hazır! Bol şans dileriz.";
-    }
+}
 </script>
 
 </body>
 </html>
+
 
