@@ -227,37 +227,71 @@
 </div>
 
 <script>
-function generateNumbers() {
-    const zodiac = document.getElementById("zodiac").value; // Burç seçimi
-    const container = document.getElementById("balls-container"); // Sayıların görüneceği kutu
-    const day = new Date().getDate();
-    const zLen = zodiac.length;
+// 1. TEMA GÜNCELLEME (Eksik olan fonksiyonu ekledik)
+function updateTheme() {
+    const zodiac = document.getElementById("zodiac").value;
+    const colors = {
+        aries: "#FF4136", taurus: "#2ECC40", gemini: "#FFDC00", 
+        cancer: "#DDDDDD", leo: "#FF851B", virgo: "#85144b", 
+        libra: "#F012BE", scorpio: "#FF0000", sagittarius: "#B10DC9", 
+        capricorn: "#3D9970", aquarius: "#7FDBFF", pisces: "#39CCCC"
+    };
     
-    // Make.com ile AYNI matematik
+    // Konteynırın kenar rengini burca göre değiştirir (Estetik dokunuş)
+    if(colors[zodiac]) {
+        document.querySelector('.container').style.borderColor = colors[zodiac];
+    }
+}
+
+// 2. SAYI ÜRETME FONKSİYONU
+function generateNumbers() {
+    const zodiacSelect = document.getElementById("zodiac");
+    const zodiac = zodiacSelect.value; 
+    const container = document.getElementById("balls-container");
+    const commentBox = document.getElementById("horoscope-comment");
+
+    if (!zodiac) {
+        alert("Lütfen önce burcunuzu seçin!");
+        return;
+    }
+
+    // Seçilen burcun TÜRKÇE adının uzunluğunu alıyoruz (Make.com ile eşleşmesi için)
+    const selectedText = zodiacSelect.options[zodiacSelect.selectedIndex].text;
+    const zLen = selectedText.length;
+    
+    const day = new Date().getDate();
     const multipliers = [7, 13, 19, 25, 31, 37];
     const adds = [3, 5, 8, 11, 14, 17];
     
     let numbers = [];
     for (let i = 0; i < 6; i++) {
         let n = ((day * multipliers[i] + zLen * adds[i]) % 49) + 1;
-        // Benzersizlik kontrolü
         while(numbers.includes(n)) { n = (n % 49) + 1; }
         numbers.push(n);
     }
     numbers.sort((a, b) => a - b);
 
-    // Ekrana Basma Kısmı
-    container.innerHTML = ""; // Önceki sayıları temizle
-    numbers.forEach(num => {
-        const ball = document.createElement("div");
-        ball.className = "ball";
-        ball.innerText = num;
-        container.appendChild(ball); // İşte sayıları ekrana burada ekliyoruz!
+    // EKRANA BASMA
+    container.innerHTML = ""; 
+    commentBox.innerText = "Yıldızlar senin için hizalanıyor...";
+
+    numbers.forEach((num, index) => {
+        // Her topun 0.2 saniye arayla "pop" efektiyle gelmesini sağlar
+        setTimeout(() => {
+            const ball = document.createElement("div");
+            ball.className = "ball";
+            ball.innerText = num;
+            container.appendChild(ball);
+            
+            if (index === 5) {
+                commentBox.innerText = "Kozmik sayılar başarıyla hesaplandı! Şans seninle olsun.";
+            }
+        }, index * 200);
     });
 }
 </script>
-
 </body>
 </html>
+
 
 
