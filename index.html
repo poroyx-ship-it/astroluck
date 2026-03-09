@@ -224,75 +224,99 @@
 </div>
 
 <script>
+// Burç Renk Paleti (Buton ve Çerçeve Renkleri İçin)
 const colorPalette = {
     aries: "#FF4136", taurus: "#2ECC40", gemini: "#FFDC00", cancer: "#DDDDDD",
     leo: "#FF851B", virgo: "#85144b", libra: "#F012BE", scorpio: "#FF0000",
     sagittarius: "#B10DC9", capricorn: "#3D9970", aquarius: "#7FDBFF", pisces: "#39CCCC"
 };
 
-function generateNumbers() {
+// Sayfa yüklendiğinde veya burç değiştiğinde temayı güncelle
+function updateTheme() {
     const zodiac = document.getElementById("zodiac").value;
-    if(!zodiac) return alert("Burç seçiniz!");
-    
-    const day = new Date().getDate(); // Gün (DD)
-    const zLen = zodiac.length;
+    const color = colorPalette[zodiac];
+    if(color) {
+        document.querySelector('.container').style.borderColor = color;
+        document.getElementById("zodiac").style.borderColor = color;
+    }
+}
+
+// ANA FONKSİYON: Sayıları Hesapla ve Yorumu Getir
+async function generateNumbers() {
+    const zodiac = document.getElementById("zodiac").value;
     const container = document.getElementById("balls-container");
     
-    // Make'teki çarpanlarla birebir aynı dizi
+    if(!zodiac) return alert("Lütfen önce bir burç seçiniz!");
+
+    // Önce ekranı temizle
+    container.innerHTML = "";
+    let commentBox = document.getElementById("horoscope-comment");
+    if (commentBox) commentBox.innerText = "Kozmik veriler okunuyor...";
+
+    // --- 1. SAYI HESAPLAMA (Make.com ile %100 Uyumlu Formül) ---
+    const day = new Date().getDate(); 
+    const zLen = zodiac.length;
     const multipliers = [7, 13, 19, 25, 31, 37];
     const adds = [3, 5, 8, 11, 14, 17];
     
     let numbers = [];
     for (let i = 0; i < 6; i++) {
         let n = (Math.floor(day * multipliers[i] + zLen * adds[i]) % 49) + 1;
-        
-        // Eğer sayı zaten varsa (nadiren olabilir), 1 artırarak benzersiz yap
         while(numbers.includes(n)) { n = (n % 49) + 1; }
         numbers.push(n);
     }
+    numbers.sort((a, b) => a - b);
 
-    displayBalls(numbers.sort((a, b) => a - b));
-}
-            // Yorumu göster (Eğer HTML'de yorum ID'li bir div varsa)
-            let commentBox = document.getElementById("horoscope-comment");
-            if(!commentBox) {
-                commentBox = document.createElement("div");
-                commentBox.id = "horoscope-comment";
-                commentBox.style = "margin-top:20px; color:#FFD700; font-style:italic; padding:15px; border-top:1px solid rgba(255,215,0,0.2);";
-                container.parentNode.appendChild(commentBox);
-            }
-            commentBox.innerText = yorum;
+    // --- 2. TOPLARI EKRANA BAS (Animasyonlu) ---
+    numbers.forEach((num, index) => {
+        setTimeout(() => {
+            const ball = document.createElement("div");
+            ball.className = "ball";
+            ball.textContent = num;
+            container.appendChild(ball);
+        }, index * 150);
+    });
 
+    // --- 3. GOOGLE SHEETS'TEN YORUMU ÇEK ---
+    try {
+        // BURAYA: Google Sheets'ten aldığın "Web'de Yayınla" CSV linkini koy
+        const csvUrl = 'SENİN_GOOGLE_SHEETS_CSV_LINKİN_BURAYA'; 
+        
+        const response = await fetch(csvUrl);
+        const data = await response.text();
+        
+        // CSV'yi satırlara ve sütunlara ayır
+        const rows = data.split('\n').map(row => row.split(','));
+        
+        // Burç isimlerini eşleştir (Sheet'teki isimlerle aynı olmalı)
+        const zodiacNames = {
+            aries: "Koç", taurus: "Boğa", gemini: "İkizler", cancer: "Yengeç",
+            leo: "Aslan", virgo: "Başak", libra: "Terazi", scorpio: "Akrep",
+            sagittarius: "Yay", capricorn: "Oğlak", aquarius: "Kova", pisces: "Balık"
+        };
+
+        const targetRow = rows.find(r => r[1] === zodiacNames[zodiac]);
+
+        // Yorum kutusu yoksa oluştur
+        if (!commentBox) {
+            commentBox = document.createElement("div");
+            commentBox.id = "horoscope-comment";
+            commentBox.style = "margin-top:20px; color:#FFD700; font-style:italic; padding:15px; border-top:1px solid rgba(255,215,0,0.2); line-height:1.6;";
+            container.parentNode.appendChild(commentBox);
+        }
+
+        if (targetRow && targetRow[3]) {
+            commentBox.innerText = targetRow[3].replace(/"/g, ''); // 4. sütun (D) yorumdur
         } else {
-            container.innerHTML = "<p>Bugünün şanslı sayıları henüz hazır değil, lütfen az sonra tekrar deneyin.</p>";
+            commentBox.innerText = "Yıldızlar bugün senin için parlıyor! Şanslı sayılarınla kazanmaya hazırsın.";
         }
     } catch (error) {
-        console.error("Veri çekme hatası:", error);
-        container.innerHTML = "<p>Kozmik bir bağlantı sorunu oluştu.</p>";
+        console.log("Yorum henüz hazır değil, sadece sayılar gösteriliyor.");
     }
-
-    let numbers = new Set();
-    let counter = 0;
-    while(numbers.size < 6) {
-        // Her seferinde aynı sonucu veren rastgele sayı üretimi
-        let x = Math.abs(Math.sin(hash + counter++) * 10000);
-        let num = Math.floor((x % 49)) + 1;
-        numbers.add(num);
-    }
-    
-    Array.from(numbers).sort((a,b)=>a-b).forEach((n, i) => {
-        setTimeout(() => {
-            let b = document.createElement("div");
-            b.className = "ball";
-            b.textContent = n;
-            container.appendChild(b);
-        }, i * 150);
-    });
-}
 </script>
-
 </body>
 </html>
+
 
 
 
