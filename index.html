@@ -16,7 +16,6 @@
             --glass-bg: rgba(10, 14, 26, 0.92);
         }
 
-        /* Tüm Ekranlarda Tam Sayfa Yerleşimi */
         * { box-sizing: border-box; }
         html, body {
             height: 100%;
@@ -36,17 +35,15 @@
             text-align: center;
         }
 
-        /* DAHA BELİRGİN YILDIZ ARKA PLANI */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0;
             width: 200%; height: 200%;
-            /* Yıldızlar daha büyük ve net olması için görsel ölçeklendirildi */
             background: url("https://www.transparenttextures.com/patterns/stardust.png");
             background-size: 400px; 
             animation: moveStars 100s linear infinite;
-            opacity: 0.6; /* Parlaklık artırıldı */
+            opacity: 0.6;
             z-index: -2;
         }
 
@@ -55,7 +52,6 @@
             to { transform: translate(-500px, -500px); }
         }
 
-        /* YAVAŞ DÖNEN BURÇ ÇARKI */
         .zodiac-wheel {
             position: fixed;
             width: 130vmin;
@@ -72,7 +68,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* ANA PANEL - Responsive Denge */
         .container {
             width: 90%;
             max-width: 500px;
@@ -94,9 +89,8 @@
             filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
         }
 
-        /* BURÇ SEÇİM VE BUTON - GENİŞLİKLER EŞİTLENDİ */
         .control-group {
-            width: 280px; /* Her iki butonun da sabit genişliği */
+            width: 280px;
             max-width: 100%;
             margin: 0 auto;
             display: flex;
@@ -120,7 +114,7 @@
         }
 
         button {
-            width: 100%; /* Select ile aynı genişlikte */
+            width: 100%;
             padding: 15px;
             border: none;
             border-radius: 50px;
@@ -136,7 +130,6 @@
 
         button:active { transform: scale(0.96); }
 
-        /* KOZMİK TOPLAR - TEK SIRA */
         #balls-container {
             display: flex;
             justify-content: center;
@@ -181,7 +174,16 @@
 
         .social a:hover { transform: scale(1.2); }
 
-        /* Küçük Telefonlar İçin Alan Kazanma */
+        #horoscope-comment {
+            margin-top: 20px;
+            color: #FFD700;
+            font-style: italic;
+            padding: 15px;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
         @media (max-height: 720px) {
             .container { gap: 15px; padding: 25px 20px; }
             .logo { width: 150px; }
@@ -216,6 +218,7 @@
     </div>
 
     <div id="balls-container"></div>
+    <div id="horoscope-comment"></div>
 
     <div class="social">
         <a href="https://www.instagram.com/astroluck.6/" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -224,14 +227,12 @@
 </div>
 
 <script>
-// Burç Renk Paleti (Buton ve Çerçeve Renkleri İçin)
 const colorPalette = {
     aries: "#FF4136", taurus: "#2ECC40", gemini: "#FFDC00", cancer: "#DDDDDD",
     leo: "#FF851B", virgo: "#85144b", libra: "#F012BE", scorpio: "#FF0000",
     sagittarius: "#B10DC9", capricorn: "#3D9970", aquarius: "#7FDBFF", pisces: "#39CCCC"
 };
 
-// Sayfa yüklendiğinde veya burç değiştiğinde temayı güncelle
 function updateTheme() {
     const zodiac = document.getElementById("zodiac").value;
     const color = colorPalette[zodiac];
@@ -241,19 +242,17 @@ function updateTheme() {
     }
 }
 
-// ANA FONKSİYON: Sayıları Hesapla ve Yorumu Getir
 async function generateNumbers() {
     const zodiac = document.getElementById("zodiac").value;
     const container = document.getElementById("balls-container");
+    const commentBox = document.getElementById("horoscope-comment");
     
     if(!zodiac) return alert("Lütfen önce bir burç seçiniz!");
 
-    // Önce ekranı temizle
     container.innerHTML = "";
-    let commentBox = document.getElementById("horoscope-comment");
-    if (commentBox) commentBox.innerText = "Kozmik veriler okunuyor...";
+    commentBox.innerText = "Kozmik veriler okunuyor...";
 
-    // --- 1. SAYI HESAPLAMA (Make.com ile %100 Uyumlu Formül) ---
+    // 1. SAYI HESAPLAMA
     const day = new Date().getDate(); 
     const zLen = zodiac.length;
     const multipliers = [7, 13, 19, 25, 31, 37];
@@ -267,7 +266,7 @@ async function generateNumbers() {
     }
     numbers.sort((a, b) => a - b);
 
-    // --- 2. TOPLARI EKRANA BAS (Animasyonlu) ---
+    // 2. TOPLARI BAS
     numbers.forEach((num, index) => {
         setTimeout(() => {
             const ball = document.createElement("div");
@@ -277,18 +276,13 @@ async function generateNumbers() {
         }, index * 150);
     });
 
-    // --- 3. GOOGLE SHEETS'TEN YORUMU ÇEK ---
+    // 3. GOOGLE SHEETS
     try {
-        // BURAYA: Google Sheets'ten aldığın "Web'de Yayınla" CSV linkini koy
-        const csvUrl = 'SENİN_GOOGLE_SHEETS_CSV_LINKİN_BURAYA'; 
-        
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRSiV2H3ncrcjaAPs4gRVnf9rd5_f3Uek3-Xn_e13kDivFqIQ7dInPM3szayR-EMJa6SIk-6yv8CCQf/pub?gid=0&single=true&output=csv'; 
         const response = await fetch(csvUrl);
         const data = await response.text();
-        
-        // CSV'yi satırlara ve sütunlara ayır
         const rows = data.split('\n').map(row => row.split(','));
         
-        // Burç isimlerini eşleştir (Sheet'teki isimlerle aynı olmalı)
         const zodiacNames = {
             aries: "Koç", taurus: "Boğa", gemini: "İkizler", cancer: "Yengeç",
             leo: "Aslan", virgo: "Başak", libra: "Terazi", scorpio: "Akrep",
@@ -297,28 +291,16 @@ async function generateNumbers() {
 
         const targetRow = rows.find(r => r[1] === zodiacNames[zodiac]);
 
-        // Yorum kutusu yoksa oluştur
-        if (!commentBox) {
-            commentBox = document.createElement("div");
-            commentBox.id = "horoscope-comment";
-            commentBox.style = "margin-top:20px; color:#FFD700; font-style:italic; padding:15px; border-top:1px solid rgba(255,215,0,0.2); line-height:1.6;";
-            container.parentNode.appendChild(commentBox);
-        }
-
         if (targetRow && targetRow[3]) {
-            commentBox.innerText = targetRow[3].replace(/"/g, ''); // 4. sütun (D) yorumdur
+            commentBox.innerText = targetRow[3].replace(/"/g, '');
         } else {
             commentBox.innerText = "Yıldızlar bugün senin için parlıyor! Şanslı sayılarınla kazanmaya hazırsın.";
         }
     } catch (error) {
-        console.log("Yorum henüz hazır değil, sadece sayılar gösteriliyor.");
+        commentBox.innerText = "Şanslı sayıların hazır! Günlük yorumun birazdan güncellenecek.";
     }
+}
+</script>
+
 </body>
 </html>
-
-
-
-
-
-
-
