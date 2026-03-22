@@ -206,22 +206,13 @@
             opacity: 0.6;
         }
 
-        /* SELECT */
-        .select-wrap {
+        /* CUSTOM DROPDOWN */
+        .dropdown {
             width: 100%;
             position: relative;
+            user-select: none;
         }
-        .select-wrap::after {
-            content: '▾';
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gold);
-            font-size: 14px;
-            pointer-events: none;
-        }
-        select {
+        .dropdown-selected {
             width: 100%;
             padding: 14px 20px;
             border-radius: 16px;
@@ -232,17 +223,72 @@
             font-family: 'Raleway', sans-serif;
             font-weight: 500;
             cursor: pointer;
-            outline: none;
-            appearance: none;
-            -webkit-appearance: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .dropdown-selected:hover, .dropdown.open .dropdown-selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+        }
+        .dropdown-arrow {
+            color: var(--gold);
+            font-size: 12px;
+            transition: transform 0.3s;
+            margin-left: auto;
+        }
+        .dropdown.open .dropdown-arrow { transform: rotate(180deg); }
+        .dropdown-list {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0; right: 0;
+            background: #14102a;
+            border: 1px solid rgba(201,168,76,0.25);
+            border-radius: 16px;
+            overflow: hidden;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.7);
+            animation: dropIn 0.18s ease both;
+        }
+        @keyframes dropIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .dropdown.open .dropdown-list { display: block; }
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 6px;
+            gap: 2px;
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Raleway', sans-serif;
+            color: #c4b0e8;
+            transition: background 0.15s, color 0.15s;
+        }
+        .dropdown-item:hover {
+            background: rgba(201,168,76,0.1);
+            color: var(--gold-light);
+        }
+        .dropdown-item.selected {
+            background: rgba(108,79,212,0.25);
+            color: var(--gold);
+        }
+        .dropdown-item .sign-sym {
+            font-size: 16px;
+            width: 22px;
             text-align: center;
         }
-        select:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
-        }
-        select option { background: #1a1433; }
 
         /* BUTTON */
         .btn {
@@ -421,23 +467,28 @@
 
     <div class="divider"><div class="divider-icon">✦</div></div>
 
-    <!-- SELECT -->
-    <div class="select-wrap">
-        <select id="zodiac" onchange="updateTheme()">
-            <option value="" disabled selected>✦ Burcunu Seç ✦</option>
-            <option value="aries">♈ Koç</option>
-            <option value="taurus">♉ Boğa</option>
-            <option value="gemini">♊ İkizler</option>
-            <option value="cancer">♋ Yengeç</option>
-            <option value="leo">♌ Aslan</option>
-            <option value="virgo">♍ Başak</option>
-            <option value="libra">♎ Terazi</option>
-            <option value="scorpio">♏ Akrep</option>
-            <option value="sagittarius">♐ Yay</option>
-            <option value="capricorn">♑ Oğlak</option>
-            <option value="aquarius">♒ Kova</option>
-            <option value="pisces">♓ Balık</option>
-        </select>
+    <!-- CUSTOM DROPDOWN -->
+    <div class="dropdown" id="dropdown">
+        <div class="dropdown-selected" id="dropdown-selected" onclick="toggleDropdown()">
+            <span id="selected-label">✦ &nbsp;Burcunu Seç&nbsp; ✦</span>
+            <span class="dropdown-arrow">▾</span>
+        </div>
+        <div class="dropdown-list">
+            <div class="dropdown-grid">
+                <div class="dropdown-item" onclick="selectSign('aries','♈','Koç')"><span class="sign-sym">♈</span>Koç</div>
+                <div class="dropdown-item" onclick="selectSign('taurus','♉','Boğa')"><span class="sign-sym">♉</span>Boğa</div>
+                <div class="dropdown-item" onclick="selectSign('gemini','♊','İkizler')"><span class="sign-sym">♊</span>İkizler</div>
+                <div class="dropdown-item" onclick="selectSign('cancer','♋','Yengeç')"><span class="sign-sym">♋</span>Yengeç</div>
+                <div class="dropdown-item" onclick="selectSign('leo','♌','Aslan')"><span class="sign-sym">♌</span>Aslan</div>
+                <div class="dropdown-item" onclick="selectSign('virgo','♍','Başak')"><span class="sign-sym">♍</span>Başak</div>
+                <div class="dropdown-item" onclick="selectSign('libra','♎','Terazi')"><span class="sign-sym">♎</span>Terazi</div>
+                <div class="dropdown-item" onclick="selectSign('scorpio','♏','Akrep')"><span class="sign-sym">♏</span>Akrep</div>
+                <div class="dropdown-item" onclick="selectSign('sagittarius','♐','Yay')"><span class="sign-sym">♐</span>Yay</div>
+                <div class="dropdown-item" onclick="selectSign('capricorn','♑','Oğlak')"><span class="sign-sym">♑</span>Oğlak</div>
+                <div class="dropdown-item" onclick="selectSign('aquarius','♒','Kova')"><span class="sign-sym">♒</span>Kova</div>
+                <div class="dropdown-item" onclick="selectSign('pisces','♓','Balık')"><span class="sign-sym">♓</span>Balık</div>
+            </div>
+        </div>
     </div>
 
     <!-- BUTTON -->
@@ -521,46 +572,82 @@ const comments = {
     pisces: "Sezgilerin ve hayal gücün bugün en güçlü silahların. Ruhuna kulak ver."
 };
 
+// Make'teki split listesiyle birebir aynı küçük harfli isimler
+const makeNames = {
+    aries: 'koç',
+    taurus: 'boğa',
+    gemini: 'ikizler',
+    cancer: 'yengeç',
+    leo: 'aslan',
+    virgo: 'başak',
+    libra: 'terazi',
+    scorpio: 'akrep',
+    sagittarius: 'yay',
+    capricorn: 'oğlak',
+    aquarius: 'kova',
+    pisces: 'balık'
+};
+
+let selectedZodiac = '';
+let selectedName = '';
+
+function toggleDropdown() {
+    document.getElementById('dropdown').classList.toggle('open');
+}
+
+document.addEventListener('click', function(e) {
+    const dd = document.getElementById('dropdown');
+    if (!dd.contains(e.target)) dd.classList.remove('open');
+});
+
+function selectSign(value, sym, name) {
+    selectedZodiac = value;
+    selectedName = name;
+    document.getElementById('selected-label').textContent = sym + '  ' + name;
+    document.getElementById('dropdown').classList.remove('open');
+    document.querySelectorAll('.dropdown-item').forEach(el => el.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    updateTheme();
+}
+
 function updateTheme() {
-    const z = document.getElementById('zodiac').value;
-    if (signColors[z]) {
-        document.querySelector('.card').style.setProperty('--border', signColors[z] + '44');
+    if (signColors[selectedZodiac]) {
+        const c = signColors[selectedZodiac];
+        document.querySelector('.card').style.setProperty('--border', c + '44');
         document.querySelector('.card').style.boxShadow =
-            `0 0 0 1px ${signColors[z]}18, 0 40px 80px rgba(0,0,0,0.7), inset 0 1px 0 ${signColors[z]}33`;
+            `0 0 0 1px ${c}18, 0 40px 80px rgba(0,0,0,0.7), inset 0 1px 0 ${c}33`;
     }
 }
 
 function generateNumbers() {
-    const zodiacSelect = document.getElementById('zodiac');
-    const zodiac = zodiacSelect.value;
     const container = document.getElementById('balls-container');
     const commentBox = document.getElementById('horoscope-comment');
     const label = document.getElementById('balls-label');
 
-    if (!zodiac) {
-        zodiacSelect.style.borderColor = 'rgba(201,168,76,0.8)';
-        setTimeout(() => zodiacSelect.style.borderColor = '', 800);
+    if (!selectedZodiac) {
+        const sel = document.getElementById('dropdown-selected');
+        sel.style.borderColor = 'rgba(201,168,76,0.9)';
+        sel.style.boxShadow = '0 0 0 3px rgba(201,168,76,0.2)';
+        setTimeout(() => { sel.style.borderColor = ''; sel.style.boxShadow = ''; }, 800);
         return;
     }
 
-    const selectedText = zodiacSelect.options[zodiacSelect.selectedIndex].text;
-    const zLen = selectedText.replace(/[^\u0000-\u007E]/g, '').trim().length || selectedText.length;
-
+    // Make'teki length() ile birebir eşleşmesi için küçük harfli Make ismi kullan
+    const zLen = makeNames[selectedZodiac].length;
     const day = new Date().getDate();
     const multipliers = [7, 13, 19, 25, 31, 37];
     const adds = [3, 5, 8, 11, 14, 17];
 
+    // Make formülüyle birebir: floor(gün * M + uzunluk * A) % 49 + 1
     let numbers = [];
     for (let i = 0; i < 6; i++) {
-        let n = ((day * multipliers[i] + zLen * adds[i]) % 49) + 1;
+        let n = (Math.floor(day * multipliers[i] + zLen * adds[i]) % 49) + 1;
         while (numbers.includes(n)) { n = (n % 49) + 1; }
         numbers.push(n);
     }
     numbers.sort((a, b) => a - b);
 
-    // Orta top (index 2 veya 3) özel renkte
     const specialIndex = Math.floor(numbers.length / 2);
-
     container.innerHTML = '';
     label.classList.add('show');
     commentBox.classList.remove('show');
@@ -571,9 +658,8 @@ function generateNumbers() {
             ball.className = `ball ball-bg${index === specialIndex ? ' special' : ''}`;
             ball.innerHTML = `<span>${num}</span>`;
             container.appendChild(ball);
-
             if (index === numbers.length - 1) {
-                commentBox.textContent = comments[zodiac] || 'Bugün kozmik enerjiler seninle. Şans ve başarı yolun açık!';
+                commentBox.textContent = comments[selectedZodiac] || 'Bugün kozmik enerjiler seninle. Şans ve başarı yolun açık!';
                 commentBox.classList.add('show');
             }
         }, index * 160);
