@@ -35,6 +35,72 @@
       padding: 20px;
     }
 
+    .burc-panel {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 24px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      margin-bottom: 28px;
+    }
+
+    .burc-panel h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .burc-panel p {
+      opacity: 0.88;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .burc-controls {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .burc-select {
+      min-width: 240px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 15px;
+      outline: none;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .burc-select option {
+      color: #111827;
+    }
+
+    .burc-btn {
+      border: none;
+      outline: none;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(90deg, #a855f7, #3b82f6);
+      color: white;
+      box-shadow: 0 8px 25px rgba(96, 165, 250, 0.28);
+      transition: 0.3s ease;
+    }
+
+    .burc-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+
     .result-card {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255,255,255,0.12);
@@ -53,6 +119,13 @@
       text-transform: uppercase;
       opacity: 0.75;
       margin-bottom: 10px;
+    }
+
+    .burc-name {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #c4b5fd;
     }
 
     .cosmic-number {
@@ -283,6 +356,10 @@
       .plan-card {
         max-width: 100%;
       }
+
+      .burc-panel h1 {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
@@ -290,10 +367,36 @@
 
   <section class="cosmic-result-wrapper">
 
+    <div class="burc-panel">
+      <h1>Burcunu Seç</h1>
+      <p>Burcuna göre günlük kozmik sayını ve enerjini görüntüle.</p>
+
+      <div class="burc-controls">
+        <select id="burcSec" class="burc-select">
+          <option value="">Burç seç</option>
+          <option value="Koç">Koç</option>
+          <option value="Boğa">Boğa</option>
+          <option value="İkizler">İkizler</option>
+          <option value="Yengeç">Yengeç</option>
+          <option value="Aslan">Aslan</option>
+          <option value="Başak">Başak</option>
+          <option value="Terazi">Terazi</option>
+          <option value="Akrep">Akrep</option>
+          <option value="Yay">Yay</option>
+          <option value="Oğlak">Oğlak</option>
+          <option value="Kova">Kova</option>
+          <option value="Balık">Balık</option>
+        </select>
+
+        <button id="burcBtn" class="burc-btn" type="button">Burcumu Göster</button>
+      </div>
+    </div>
+
     <div class="result-card">
       <p class="result-label">Bugünün Kozmik Sayısı</p>
-      <div class="cosmic-number">8</div>
-      <p class="result-message">
+      <div id="burcAdi" class="burc-name">Burç seçilmedi</div>
+      <div id="kozmikSayi" class="cosmic-number">8</div>
+      <p id="burcMesaji" class="result-message">
         Bugün güç, para ve fırsat enerjisi seninle. Kararlarını netleştirmen gereken bir gün.
       </p>
     </div>
@@ -354,7 +457,7 @@
         </div>
       </div>
 
-      <button class="premium-btn">Premium’u Aç</button>
+      <button class="premium-btn" type="button">Premium’u Aç</button>
 
       <div class="trust-text">
         Güvenli ödeme • Anında erişim • İstediğin zaman iptal
@@ -362,6 +465,81 @@
     </div>
 
   </section>
+
+  <script>
+    const burcBtn = document.getElementById("burcBtn");
+    const burcSec = document.getElementById("burcSec");
+    const burcAdi = document.getElementById("burcAdi");
+    const kozmikSayi = document.getElementById("kozmikSayi");
+    const burcMesaji = document.getElementById("burcMesaji");
+
+    const burcVerileri = {
+      "Koç": {
+        sayi: 3,
+        mesaj: "Bugün cesaret ve hareket enerjin yükseliyor. Hızlı ama bilinçli kararlar sana avantaj sağlar."
+      },
+      "Boğa": {
+        sayi: 6,
+        mesaj: "Bugün huzur, denge ve maddi güven temaları öne çıkıyor. Sabırlı kalırsan güzel sonuçlar alırsın."
+      },
+      "İkizler": {
+        sayi: 5,
+        mesaj: "İletişim gücün artıyor. Beklenmedik haberler ve yeni bağlantılar gününe hareket katabilir."
+      },
+      "Yengeç": {
+        sayi: 2,
+        mesaj: "Duygusal sezgilerin çok açık. Bugün kalbini dinlemek seni doğru kişilere ve doğru kararlara götürebilir."
+      },
+      "Aslan": {
+        sayi: 8,
+        mesaj: "Güç, görünürlük ve fırsat enerjisi seninle. Kendini geri tutma, liderlik alanın açılıyor."
+      },
+      "Başak": {
+        sayi: 4,
+        mesaj: "Detaylara odaklanmak bugün sana başarı getirir. Düzen kurmak ve netleşmek için güçlü bir gün."
+      },
+      "Terazi": {
+        sayi: 7,
+        mesaj: "İçsel denge ve sezgi ön planda. Bugün acele karar vermek yerine gözlem yapman daha faydalı olur."
+      },
+      "Akrep": {
+        sayi: 9,
+        mesaj: "Dönüşüm ve derin farkındalık enerjisi aktif. Eskiyi bırakıp yeniye yönelmek için güçlü bir zaman."
+      },
+      "Yay": {
+        sayi: 1,
+        mesaj: "Yeni başlangıçlar seni çağırıyor. Bugün ilk adımı atarsan evren seni destekleyebilir."
+      },
+      "Oğlak": {
+        sayi: 10,
+        mesaj: "Hedef, disiplin ve başarı odağın yüksek. Uzun vadeli planlar için sağlam bir enerji var."
+      },
+      "Kova": {
+        sayi: 11,
+        mesaj: "İlham ve sıra dışı fikirler bugün çok güçlü. Farklı düşünmek sana avantaj sağlayacak."
+      },
+      "Balık": {
+        sayi: 12,
+        mesaj: "Ruhsal hassasiyetin ve yaratıcılığın yükseliyor. İç sesini dinlersen önemli bir işaret alabilirsin."
+      }
+    };
+
+    burcBtn.addEventListener("click", function () {
+      const secilenBurc = burcSec.value;
+
+      if (!secilenBurc) {
+        burcAdi.textContent = "Burç seçilmedi";
+        kozmikSayi.textContent = "?";
+        burcMesaji.textContent = "Lütfen önce bir burç seç.";
+        return;
+      }
+
+      const veri = burcVerileri[secilenBurc];
+      burcAdi.textContent = secilenBurc;
+      kozmikSayi.textContent = veri.sayi;
+      burcMesaji.textContent = veri.mesaj;
+    });
+  </script>
 
 </body>
 </html>
