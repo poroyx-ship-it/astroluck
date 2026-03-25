@@ -28,6 +28,10 @@
       padding: 30px 16px 60px;
     }
 
+    body.modal-open {
+      overflow: hidden;
+    }
+
     .cosmic-result-wrapper {
       width: 100%;
       max-width: 1100px;
@@ -221,6 +225,8 @@
       font-weight: 700;
       letter-spacing: 1.5px;
       margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
     }
 
     .premium-offer h2 {
@@ -336,6 +342,193 @@
       z-index: 2;
     }
 
+    .premium-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 10, 25, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+
+    .premium-modal.active {
+      display: flex;
+    }
+
+    .premium-modal-box {
+      position: relative;
+      width: 100%;
+      max-width: 860px;
+      background: linear-gradient(135deg, rgba(17,24,39,0.95), rgba(30,41,59,0.92));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 28px;
+      padding: 34px 24px 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .premium-modal-box::before {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(192,132,252,0.12);
+      top: -90px;
+      right: -70px;
+      filter: blur(15px);
+    }
+
+    .close-modal-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 26px;
+      cursor: pointer;
+      transition: 0.25s ease;
+      z-index: 2;
+    }
+
+    .close-modal-btn:hover {
+      background: rgba(255,255,255,0.16);
+      transform: scale(1.05);
+    }
+
+    .premium-modal-badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .premium-modal-box h2 {
+      font-size: 34px;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .premium-modal-text {
+      max-width: 680px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+      opacity: 0.92;
+      font-size: 17px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .premium-modal-plans {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+    }
+
+    .premium-modal-plan {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 24px 20px;
+      transition: 0.3s ease;
+    }
+
+    .premium-modal-plan:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.24);
+    }
+
+    .premium-modal-plan.featured {
+      border-color: rgba(216,180,254,0.5);
+      box-shadow: 0 0 30px rgba(168,85,247,0.16);
+    }
+
+    .modal-popular-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #d8b4fe;
+      color: #1f1147;
+    }
+
+    .premium-modal-plan h3 {
+      font-size: 24px;
+      margin-bottom: 14px;
+    }
+
+    .premium-modal-price {
+      font-size: 38px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .premium-modal-price span {
+      font-size: 15px;
+      font-weight: 500;
+      opacity: 0.75;
+      margin-left: 4px;
+    }
+
+    .premium-modal-plan p {
+      font-size: 15px;
+      line-height: 1.7;
+      opacity: 0.88;
+      margin-bottom: 18px;
+    }
+
+    .select-plan-btn {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      color: white;
+      background: rgba(255,255,255,0.1);
+      transition: 0.25s ease;
+    }
+
+    .select-plan-btn:hover {
+      background: rgba(255,255,255,0.16);
+    }
+
+    .featured-btn {
+      background: linear-gradient(90deg, #c084fc, #60a5fa);
+      box-shadow: 0 8px 24px rgba(96,165,250,0.22);
+    }
+
+    .featured-btn:hover {
+      transform: translateY(-2px);
+    }
+
     @media (max-width: 768px) {
       .locked-insights {
         grid-template-columns: 1fr;
@@ -345,15 +538,18 @@
         font-size: 64px;
       }
 
-      .premium-offer h2 {
+      .premium-offer h2,
+      .premium-modal-box h2 {
         font-size: 28px;
       }
 
-      .result-message {
+      .result-message,
+      .premium-modal-text {
         font-size: 16px;
       }
 
-      .plan-card {
+      .plan-card,
+      .premium-modal-plan {
         max-width: 100%;
       }
 
@@ -457,7 +653,7 @@
         </div>
       </div>
 
-      <button class="premium-btn" type="button">Premium’u Aç</button>
+      <button id="openPremiumModal" class="premium-btn" type="button">Premium’u Aç</button>
 
       <div class="trust-text">
         Güvenli ödeme • Anında erişim • İstediğin zaman iptal
@@ -465,6 +661,35 @@
     </div>
 
   </section>
+
+  <div id="premiumModal" class="premium-modal">
+    <div class="premium-modal-box">
+      <button id="closePremiumModal" class="close-modal-btn" type="button">×</button>
+
+      <div class="premium-modal-badge">ASTROLUCK6 PREMIUM</div>
+      <h2>Kozmik rehberliğin tam halini aç</h2>
+      <p class="premium-modal-text">
+        Aşk, para, kariyer, şanslı saat, evrenin özel mesajı ve tüm detaylı analizler seni bekliyor.
+      </p>
+
+      <div class="premium-modal-plans">
+        <div class="premium-modal-plan">
+          <h3>Aylık Plan</h3>
+          <div class="premium-modal-price">₺99<span>/ay</span></div>
+          <p>Günlük detaylı analiz • Kilitli alanlar açık • Premium deneyim</p>
+          <button class="select-plan-btn" type="button">Aylık Planı Seç</button>
+        </div>
+
+        <div class="premium-modal-plan featured">
+          <div class="modal-popular-tag">En Popüler</div>
+          <h3>Yıllık Plan</h3>
+          <div class="premium-modal-price">₺799<span>/yıl</span></div>
+          <p>Daha avantajlı fiyat • Tüm premium özellikler • Tam erişim</p>
+          <button class="select-plan-btn featured-btn" type="button">Yıllık Planı Seç</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     const burcBtn = document.getElementById("burcBtn");
@@ -538,6 +763,27 @@
       burcAdi.textContent = secilenBurc;
       kozmikSayi.textContent = veri.sayi;
       burcMesaji.textContent = veri.mesaj;
+    });
+
+    const openPremiumModal = document.getElementById("openPremiumModal");
+    const premiumModal = document.getElementById("premiumModal");
+    const closePremiumModal = document.getElementById("closePremiumModal");
+
+    openPremiumModal.addEventListener("click", function () {
+      premiumModal.classList.add("active");
+      document.body.classList.add("modal-open");
+    });
+
+    closePremiumModal.addEventListener("click", function () {
+      premiumModal.classList.remove("active");
+      document.body.classList.remove("modal-open");
+    });
+
+    premiumModal.addEventListener("click", function (e) {
+      if (e.target === premiumModal) {
+        premiumModal.classList.remove("active");
+        document.body.classList.remove("modal-open");
+      }
     });
   </script>
 
