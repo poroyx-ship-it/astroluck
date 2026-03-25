@@ -1,744 +1,367 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AstroLuck6 | Kozmik Sayıların Sırrı</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --gold: #c9a84c;
-            --gold-light: #f0cc7a;
-            --gold-dark: #8a6020;
-            --deep: #0d0a1a;
-            --mid: #140e2a;
-            --surface: #1a1433;
-            --border: rgba(201,168,76,0.2);
-            --purple: #6c4fd4;
-            --purple-light: #c4a8ff;
-            --text-muted: #7a6b9a;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AstroLuck6 Premium</title>
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        html, body {
-            height: 100%;
-            background: var(--deep);
-            font-family: 'Raleway', sans-serif;
-            color: #fff;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* STAR FIELD */
-        .stars {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .star {
-            position: absolute;
-            border-radius: 50%;
-            background: #fff;
-            animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: var(--min-op, 0.1); transform: scale(1); }
-            50% { opacity: var(--max-op, 0.8); transform: scale(1.3); }
-        }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      background:
+        radial-gradient(circle at top, rgba(124,58,237,0.25), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(59,130,246,0.22), transparent 30%),
+        linear-gradient(135deg, #0b1020, #11182e, #1a1333);
+      min-height: 100vh;
+      padding: 30px 16px 60px;
+    }
 
-        /* NEBULA GLOW */
-        .nebula {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-            pointer-events: none;
-        }
-        .nebula-1 {
-            width: 500px; height: 400px;
-            background: radial-gradient(ellipse, rgba(108,79,212,0.18) 0%, transparent 70%);
-            top: -100px; left: -100px;
-        }
-        .nebula-2 {
-            width: 400px; height: 400px;
-            background: radial-gradient(ellipse, rgba(201,168,76,0.1) 0%, transparent 70%);
-            bottom: -80px; right: -80px;
-        }
-        .nebula-3 {
-            width: 300px; height: 300px;
-            background: radial-gradient(ellipse, rgba(108,79,212,0.12) 0%, transparent 70%);
-            bottom: 100px; left: 50px;
-        }
+    .cosmic-result-wrapper {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-        /* ZODIAC WHEEL */
-        .wheel-wrap {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 0;
-            pointer-events: none;
-        }
-        .zodiac-wheel {
-            width: min(110vmin, 700px);
-            height: min(110vmin, 700px);
-            background: url('https://raw.githubusercontent.com/yigitsener/zodiac-assets/main/zodiac-wheel-gold.png') no-repeat center / contain;
-            opacity: 0.055;
-            animation: rotateWheel 180s linear infinite;
-        }
-        @keyframes rotateWheel {
-            to { transform: rotate(360deg); }
-        }
+    .result-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 24px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      margin-bottom: 28px;
+    }
 
-        /* MAIN CARD */
-        .card {
-            position: relative;
-            z-index: 10;
-            width: min(440px, 92vw);
-            background: rgba(13, 10, 26, 0.88);
-            border: 1px solid var(--border);
-            border-radius: 32px;
-            padding: clamp(28px, 5vh, 44px) clamp(24px, 5vw, 40px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            backdrop-filter: blur(40px);
-            box-shadow:
-                0 0 0 1px rgba(201,168,76,0.06),
-                0 40px 80px rgba(0,0,0,0.7),
-                inset 0 1px 0 rgba(201,168,76,0.15);
-            animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
-        @keyframes cardIn {
-            from { opacity: 0; transform: translateY(24px) scale(0.97); }
-            to   { opacity: 1; transform: translateY(0) scale(1); }
-        }
+    .result-label {
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 10px;
+    }
 
-        /* CORNER DECORATIONS */
-        .card::before, .card::after {
-            content: '';
-            position: absolute;
-            width: 40px; height: 40px;
-            border-color: var(--gold);
-            border-style: solid;
-            opacity: 0.4;
-        }
-        .card::before {
-            top: 16px; left: 16px;
-            border-width: 1px 0 0 1px;
-            border-radius: 8px 0 0 0;
-        }
-        .card::after {
-            bottom: 16px; right: 16px;
-            border-width: 0 1px 1px 0;
-            border-radius: 0 0 8px 0;
-        }
+    .cosmic-number {
+      font-size: 84px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 16px;
+      color: #d8b4fe;
+      text-shadow: 0 0 18px rgba(216, 180, 254, 0.8);
+    }
 
-        /* HEADER */
-        .header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-        .logo-wrap {
-            position: relative;
-            display: inline-block;
-        }
-        .logo-wrap img {
-            width: clamp(150px, 30vw, 200px);
-            filter: drop-shadow(0 0 18px rgba(201,168,76,0.35));
-            display: block;
-        }
-        .app-name {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(20px, 4vw, 26px);
-            font-weight: 900;
-            letter-spacing: 0.18em;
-            background: linear-gradient(135deg, #c9a84c 0%, #f0cc7a 40%, #c9a84c 70%, #8a6020 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-transform: uppercase;
-        }
-        .tagline {
-            font-size: 11px;
-            color: var(--text-muted);
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            font-weight: 400;
-        }
+    .result-message {
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 700px;
+      margin: 0 auto;
+      opacity: 0.95;
+    }
 
-        /* DATE PILL */
-        .date-pill {
-            background: var(--surface);
-            border: 1px solid rgba(201,168,76,0.18);
-            border-radius: 20px;
-            padding: 5px 14px;
-            font-size: 11px;
-            color: var(--text-muted);
-            letter-spacing: 0.06em;
-        }
-        .date-pill span { color: var(--gold); font-weight: 500; }
+    .locked-insights {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
 
-        /* DIVIDER */
-        .divider {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent);
-        }
-        .divider-icon {
-            font-size: 14px;
-            color: var(--gold);
-            opacity: 0.6;
-        }
+    .locked-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 20px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: 0.3s ease;
+    }
 
-        /* CUSTOM DROPDOWN */
-        .dropdown {
-            width: 100%;
-            position: relative;
-            user-select: none;
-        }
-        .dropdown-selected {
-            width: 100%;
-            padding: 14px 20px;
-            border-radius: 16px;
-            border: 1px solid rgba(201,168,76,0.3);
-            background: var(--surface);
-            color: #fff;
-            font-size: 15px;
-            font-family: 'Raleway', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .dropdown-selected:hover, .dropdown.open .dropdown-selected {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
-        }
-        .dropdown-arrow {
-            color: var(--gold);
-            font-size: 12px;
-            transition: transform 0.3s;
-            margin-left: auto;
-        }
-        .dropdown.open .dropdown-arrow { transform: rotate(180deg); }
-        .dropdown-list {
-            position: absolute;
-            top: calc(100% + 6px);
-            left: 0; right: 0;
-            background: #14102a;
-            border: 1px solid rgba(201,168,76,0.25);
-            border-radius: 16px;
-            overflow: hidden;
-            z-index: 100;
-            display: none;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.7);
-            animation: dropIn 0.18s ease both;
-        }
-        @keyframes dropIn {
-            from { opacity: 0; transform: translateY(-6px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        .dropdown.open .dropdown-list { display: block; }
-        .dropdown-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            padding: 6px;
-            gap: 2px;
-        }
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-family: 'Raleway', sans-serif;
-            color: #c4b0e8;
-            transition: background 0.15s, color 0.15s;
-        }
-        .dropdown-item:hover {
-            background: rgba(201,168,76,0.1);
-            color: var(--gold-light);
-        }
-        .dropdown-item.selected {
-            background: rgba(108,79,212,0.25);
-            color: var(--gold);
-        }
-        .dropdown-item .sign-sym {
-            font-size: 16px;
-            width: 22px;
-            text-align: center;
-        }
+    .locked-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(216,180,254,0.4);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
 
-        /* BUTTON */
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 50px;
-            background: linear-gradient(135deg, #8a6020 0%, #c9a84c 30%, #f0cc7a 50%, #c9a84c 70%, #8a6020 100%);
-            background-size: 200% auto;
-            color: #0d0a1a;
-            font-family: 'Cinzel', serif;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: background-position 0.4s, transform 0.15s, box-shadow 0.3s;
-            box-shadow: 0 4px 24px rgba(201,168,76,0.25);
-        }
-        .btn:hover {
-            background-position: right center;
-            box-shadow: 0 6px 32px rgba(201,168,76,0.4);
-        }
-        .btn:active { transform: scale(0.97); }
+    .locked-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 17px;
+      font-weight: 600;
+    }
 
-        /* BALLS */
-        .balls-section {
-            width: 100%;
-            min-height: 72px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .balls-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            display: none;
-        }
-        .balls-label.show { display: block; }
-        #balls-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: clamp(6px, 2vw, 12px);
-            flex-wrap: nowrap;
-        }
-        .ball {
-            width: clamp(44px, 11vw, 60px);
-            height: clamp(44px, 11vw, 60px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Cinzel', serif;
-            font-weight: 600;
-            font-size: clamp(14px, 3.5vw, 18px);
-            color: #0d0a1a;
-            position: relative;
-            animation: ballPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
-        .ball::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.55) 0%, transparent 55%);
-            z-index: 1;
-        }
-        .ball span { position: relative; z-index: 2; }
-        .ball-bg {
-            background: radial-gradient(circle at 40% 35%, #f0cc7a 0%, #c9a84c 45%, #7a4e10 100%);
-            box-shadow: 0 4px 16px rgba(201,168,76,0.5), inset 0 -2px 4px rgba(0,0,0,0.3);
-        }
-        .ball-bg.special {
-            background: radial-gradient(circle at 40% 35%, #e8c0ff 0%, #9a6ee0 45%, #3d1a80 100%);
-            box-shadow: 0 4px 16px rgba(154,110,224,0.6), inset 0 -2px 4px rgba(0,0,0,0.3);
-        }
-        .ball-bg.special span { color: #fff; }
-        @keyframes ballPop {
-            0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
-            80%  { transform: scale(1.08) rotate(3deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
+    .lock-icon {
+      font-size: 18px;
+    }
 
-        /* COMMENT */
-        #horoscope-comment {
-            width: 100%;
-            padding: 14px 16px;
-            background: var(--surface);
-            border: 1px solid rgba(201,168,76,0.12);
-            border-radius: 14px;
-            color: var(--gold-light);
-            font-size: 12.5px;
-            font-style: italic;
-            line-height: 1.65;
-            text-align: center;
-            display: none;
-            animation: fadeIn 0.5s ease both;
-        }
-        #horoscope-comment.show { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+    .locked-card p {
+      margin: 0;
+      opacity: 0.8;
+      line-height: 1.6;
+      font-size: 15px;
+    }
 
-        /* SOCIAL */
-        .social {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--surface);
-            border: 1px solid rgba(201,168,76,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold);
-            font-size: 16px;
-            text-decoration: none;
-            transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
-        }
-        .social-link:hover {
-            border-color: var(--gold);
-            box-shadow: 0 0 16px rgba(201,168,76,0.3);
-            transform: translateY(-2px);
-        }
-        .social-link svg { width: 16px; height: 16px; fill: currentColor; }
+    .premium-offer {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(124,58,237,0.22), rgba(59,130,246,0.18));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 28px;
+      padding: 34px 24px;
+      text-align: center;
+      box-shadow: 0 10px 45px rgba(0,0,0,0.28);
+    }
 
-        /* APP PROMO BADGE */
-        .app-badge {
-            font-size: 10px;
-            color: var(--text-muted);
-            letter-spacing: 0.06em;
-            text-align: center;
-            opacity: 0.7;
-        }
-        .app-badge span { color: var(--gold); }
+    .premium-offer::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      top: -80px;
+      right: -60px;
+      filter: blur(10px);
+    }
 
-        /* RESPONSIVE: short screens */
-        @media (max-height: 680px) {
-            .card { gap: 14px; padding: 20px 24px; }
-            .app-name { font-size: 18px; }
-        }
-    </style>
+    .premium-badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+    }
+
+    .premium-offer h2 {
+      font-size: 34px;
+      margin: 0 0 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .premium-offer > p {
+      max-width: 650px;
+      margin: 0 auto 26px;
+      font-size: 17px;
+      line-height: 1.7;
+      opacity: 0.92;
+      position: relative;
+      z-index: 2;
+    }
+
+    .plan-boxes {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .plan-card {
+      min-width: 240px;
+      max-width: 280px;
+      width: 100%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 22px;
+      padding: 22px;
+      position: relative;
+      transition: 0.3s ease;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .plan-card.featured {
+      border: 1px solid rgba(216,180,254,0.55);
+      box-shadow: 0 0 30px rgba(168,85,247,0.18);
+    }
+
+    .popular-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #d8b4fe;
+      color: #1f1147;
+    }
+
+    .plan-card h3 {
+      margin: 8px 0 12px;
+      font-size: 22px;
+    }
+
+    .price {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .price span {
+      font-size: 15px;
+      font-weight: 500;
+      opacity: 0.75;
+      margin-left: 4px;
+    }
+
+    .plan-card p {
+      margin: 0;
+      font-size: 15px;
+      opacity: 0.85;
+      line-height: 1.6;
+    }
+
+    .premium-btn {
+      border: none;
+      outline: none;
+      padding: 16px 34px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(90deg, #c084fc, #60a5fa);
+      color: white;
+      box-shadow: 0 8px 25px rgba(96, 165, 250, 0.28);
+      transition: 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .premium-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .trust-text {
+      margin-top: 16px;
+      font-size: 14px;
+      opacity: 0.8;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .locked-insights {
+        grid-template-columns: 1fr;
+      }
+
+      .cosmic-number {
+        font-size: 64px;
+      }
+
+      .premium-offer h2 {
+        font-size: 28px;
+      }
+
+      .result-message {
+        font-size: 16px;
+      }
+
+      .plan-card {
+        max-width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<!-- BACKGROUND -->
-<div class="stars" id="stars"></div>
-<div class="nebula nebula-1"></div>
-<div class="nebula nebula-2"></div>
-<div class="nebula nebula-3"></div>
-<div class="wheel-wrap"><div class="zodiac-wheel"></div></div>
+  <section class="cosmic-result-wrapper">
 
-<!-- MAIN CARD -->
-<div class="card">
+    <div class="result-card">
+      <p class="result-label">Bugünün Kozmik Sayısı</p>
+      <div class="cosmic-number">8</div>
+      <p class="result-message">
+        Bugün güç, para ve fırsat enerjisi seninle. Kararlarını netleştirmen gereken bir gün.
+      </p>
+    </div>
 
-    <!-- HEADER -->
-    <div class="header">
-        <div class="logo-wrap">
-            <img src="logo.png" alt="AstroLuck6">
+    <div class="locked-insights">
+      <div class="locked-card">
+        <div class="locked-top">
+          <span>Aşk Analizi</span>
+          <span class="lock-icon">🔒</span>
         </div>
-        <div class="app-name">AstroLuck 6</div>
-        <div class="tagline">Kozmik sayıların sırrı</div>
-    </div>
+        <p>Bugünkü aşk enerjinin detaylı yorumu premium üyelikte açılır.</p>
+      </div>
 
-    <!-- DATE -->
-    <div class="date-pill" id="date-pill"></div>
-
-    <div class="divider"><div class="divider-icon">✦</div></div>
-
-    <!-- CUSTOM DROPDOWN -->
-    <div class="dropdown" id="dropdown">
-        <div class="dropdown-selected" id="dropdown-selected" onclick="toggleDropdown()">
-            <span id="selected-label">✦ &nbsp;Burcunu Seç&nbsp; ✦</span>
-            <span class="dropdown-arrow">▾</span>
+      <div class="locked-card">
+        <div class="locked-top">
+          <span>Para Kapısı</span>
+          <span class="lock-icon">🔒</span>
         </div>
-        <div class="dropdown-list">
-            <div class="dropdown-grid">
-                <div class="dropdown-item" onclick="selectSign('aries','♈','Koç')"><span class="sign-sym">♈</span>Koç</div>
-                <div class="dropdown-item" onclick="selectSign('taurus','♉','Boğa')"><span class="sign-sym">♉</span>Boğa</div>
-                <div class="dropdown-item" onclick="selectSign('gemini','♊','İkizler')"><span class="sign-sym">♊</span>İkizler</div>
-                <div class="dropdown-item" onclick="selectSign('cancer','♋','Yengeç')"><span class="sign-sym">♋</span>Yengeç</div>
-                <div class="dropdown-item" onclick="selectSign('leo','♌','Aslan')"><span class="sign-sym">♌</span>Aslan</div>
-                <div class="dropdown-item" onclick="selectSign('virgo','♍','Başak')"><span class="sign-sym">♍</span>Başak</div>
-                <div class="dropdown-item" onclick="selectSign('libra','♎','Terazi')"><span class="sign-sym">♎</span>Terazi</div>
-                <div class="dropdown-item" onclick="selectSign('scorpio','♏','Akrep')"><span class="sign-sym">♏</span>Akrep</div>
-                <div class="dropdown-item" onclick="selectSign('sagittarius','♐','Yay')"><span class="sign-sym">♐</span>Yay</div>
-                <div class="dropdown-item" onclick="selectSign('capricorn','♑','Oğlak')"><span class="sign-sym">♑</span>Oğlak</div>
-                <div class="dropdown-item" onclick="selectSign('aquarius','♒','Kova')"><span class="sign-sym">♒</span>Kova</div>
-                <div class="dropdown-item" onclick="selectSign('pisces','♓','Balık')"><span class="sign-sym">♓</span>Balık</div>
-            </div>
+        <p>Finansal fırsatların ve dikkat etmen gereken alanlar premium’da.</p>
+      </div>
+
+      <div class="locked-card">
+        <div class="locked-top">
+          <span>Şanslı Saat</span>
+          <span class="lock-icon">🔒</span>
         </div>
-    </div>
-
-    <!-- BUTTON -->
-    <button class="btn" onclick="generateNumbers()">Kozmik Sayıları Keşfet</button>
-
-    <!-- BALLS -->
-    <div class="balls-section">
-        <div class="balls-label" id="balls-label">Bugünün şanslı sayıları</div>
-        <div id="balls-container"></div>
-    </div>
-
-    <!-- COMMENT -->
-    <div id="horoscope-comment"></div>
-
-    <div class="divider"><div class="divider-icon">✦</div></div>
-
-    <!-- SOCIAL -->
-    <div class="social">
-        <a href="https://www.instagram.com/astroluck.6/" target="_blank" class="social-link" title="Instagram">
-            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=61588426601694" target="_blank" class="social-link" title="Facebook">
-            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </a>
-    </div>
-
-    <!-- APP PROMO -->
-    <div class="app-badge">Yakında <span>App Store</span> & <span>Google Play</span>'de</div>
-
-</div>
-
-<script>
-// STAR FIELD
-(function() {
-    const container = document.getElementById('stars');
-    for (let i = 0; i < 120; i++) {
-        const s = document.createElement('div');
-        s.className = 'star';
-        const size = Math.random() * 2.2 + 0.4;
-        s.style.cssText = `
-            width:${size}px; height:${size}px;
-            top:${Math.random()*100}%;
-            left:${Math.random()*100}%;
-            --d:${(Math.random()*3+2).toFixed(1)}s;
-            --delay:-${(Math.random()*4).toFixed(1)}s;
-            --min-op:${(Math.random()*0.15+0.05).toFixed(2)};
-            --max-op:${(Math.random()*0.5+0.4).toFixed(2)};
-        `;
-        container.appendChild(s);
-    }
-})();
-
-// DATE
-(function() {
-    const now = new Date();
-    const days = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
-    const months = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-    document.getElementById('date-pill').innerHTML =
-        `<span>${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}</span>`;
-})();
-
-const signColors = {
-    aries: '#e05540', taurus: '#3fb87a', gemini: '#f0c430',
-    cancer: '#a8c8e0', leo: '#f08030', virgo: '#903060',
-    libra: '#e040c0', scorpio: '#c03030', sagittarius: '#9030c0',
-    capricorn: '#408060', aquarius: '#40b0e0', pisces: '#30a8b0'
-};
-
-const comments = {
-    aries: "Bugün enerjin zirve yapıyor. Cesur adımlar at, yıldızlar seni destekliyor.",
-    taurus: "Sabır ve kararlılık bugün seni başarıya taşıyor. Maddi konularda şans kapıda.",
-    gemini: "Zihninizin hızı bugün bir adım önde. İletişim ve yeni fikirler için mükemmel gün.",
-    cancer: "Duygusal zekan bugün rehberin. Sevdiklerinle vakit geçir, kalbin doğruyu söyler.",
-    leo: "Sahne senin! Karizman ve özgüvenin bugün her kapıyı açıyor.",
-    virgo: "Detaylara olan dikkatın bugün büyük fark yaratır. Planlama zamanı.",
-    libra: "Denge ve uyum bugün sana güç veriyor. İlişkilerde harika bir gün.",
-    scorpio: "Sezgilerin keskin, içgüdülerine güven. Derin dönüşümler için ideal zaman.",
-    sagittarius: "Özgürlük ve macera seni çağırıyor. Yeni ufuklara doğru cesurca ilerle.",
-    capricorn: "Disiplin ve azmin bugün meyve veriyor. Uzun vadeli hedeflerine odaklan.",
-    aquarius: "Yaratıcılığın bugün patlar gibi. Sıra dışı fikirler etrafına ilham veriyor.",
-    pisces: "Sezgilerin ve hayal gücün bugün en güçlü silahların. Ruhuna kulak ver."
-};
-
-// Make'teki split listesiyle birebir aynı küçük harfli isimler
-const makeNames = {
-    aries: 'koç',
-    taurus: 'boğa',
-    gemini: 'ikizler',
-    cancer: 'yengeç',
-    leo: 'aslan',
-    virgo: 'başak',
-    libra: 'terazi',
-    scorpio: 'akrep',
-    sagittarius: 'yay',
-    capricorn: 'oğlak',
-    aquarius: 'kova',
-    pisces: 'balık'
-};
-
-let selectedZodiac = '';
-let selectedName = '';
-
-function toggleDropdown() {
-    document.getElementById('dropdown').classList.toggle('open');
-}
-
-document.addEventListener('click', function(e) {
-    const dd = document.getElementById('dropdown');
-    if (!dd.contains(e.target)) dd.classList.remove('open');
-});
-
-function selectSign(value, sym, name) {
-    selectedZodiac = value;
-    selectedName = name;
-    document.getElementById('selected-label').textContent = sym + '  ' + name;
-    document.getElementById('dropdown').classList.remove('open');
-    document.querySelectorAll('.dropdown-item').forEach(el => el.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
-    updateTheme();
-}
-
-function updateTheme() {
-    if (signColors[selectedZodiac]) {
-        const c = signColors[selectedZodiac];
-        document.querySelector('.card').style.setProperty('--border', c + '44');
-        document.querySelector('.card').style.boxShadow =
-            `0 0 0 1px ${c}18, 0 40px 80px rgba(0,0,0,0.7), inset 0 1px 0 ${c}33`;
-    }
-}
-
-function generateNumbers() {
-    const container = document.getElementById('balls-container');
-    const commentBox = document.getElementById('horoscope-comment');
-    const label = document.getElementById('balls-label');
-
-    if (!selectedZodiac) {
-        const sel = document.getElementById('dropdown-selected');
-        sel.style.borderColor = 'rgba(201,168,76,0.9)';
-        sel.style.boxShadow = '0 0 0 3px rgba(201,168,76,0.2)';
-        setTimeout(() => { sel.style.borderColor = ''; sel.style.boxShadow = ''; }, 800);
-        return;
-    }
-
-    // Make'teki length() ile birebir eşleşmesi için küçük harfli Make ismi kullan
-    const zLen = makeNames[selectedZodiac].length;
-    const day = new Date().getDate();
-    const multipliers = [7, 13, 19, 25, 31, 37];
-    const adds = [3, 5, 8, 11, 14, 17];
-
-    // Make formülüyle birebir: floor(gün * M + uzunluk * A) % 49 + 1
-    let numbers = [];
-    for (let i = 0; i < 6; i++) {
-        let n = (Math.floor(day * multipliers[i] + zLen * adds[i]) % 49) + 1;
-        while (numbers.includes(n)) { n = (n % 49) + 1; }
-        numbers.push(n);
-    }
-    numbers.sort((a, b) => a - b);
-
-    const specialIndex = Math.floor(numbers.length / 2);
-    container.innerHTML = '';
-    label.classList.add('show');
-    commentBox.classList.remove('show');
-
-    numbers.forEach((num, index) => {
-        setTimeout(() => {
-            const ball = document.createElement('div');
-            ball.className = `ball ball-bg${index === specialIndex ? ' special' : ''}`;
-            ball.innerHTML = `<span>${num}</span>`;
-            container.appendChild(ball);
-            if (index === numbers.length - 1) {
-                commentBox.textContent = comments[selectedZodiac] || 'Bugün kozmik enerjiler seninle. Şans ve başarı yolun açık!';
-                commentBox.classList.add('show');
-            }
-        }, index * 160);
-    });
-    <section class="cosmic-result-wrapper">
-
-  <div class="result-card">
-    <p class="result-label">Bugünün Kozmik Sayısı</p>
-    <div class="cosmic-number">8</div>
-    <p class="result-message">
-      Bugün güç, para ve fırsat enerjisi seninle. Kararlarını netleştirmen gereken bir gün.
-    </p>
-  </div>
-
-  <div class="locked-insights">
-    <div class="locked-card">
-      <div class="locked-top">
-        <span>Aşk Analizi</span>
-        <span class="lock-icon">🔒</span>
-      </div>
-      <p>Bugünkü aşk enerjinin detaylı yorumu premium üyelikte açılır.</p>
-    </div>
-
-    <div class="locked-card">
-      <div class="locked-top">
-        <span>Para Kapısı</span>
-        <span class="lock-icon">🔒</span>
-      </div>
-      <p>Finansal fırsatların ve dikkat etmen gereken alanlar premium’da.</p>
-    </div>
-
-    <div class="locked-card">
-      <div class="locked-top">
-        <span>Şanslı Saat</span>
-        <span class="lock-icon">🔒</span>
-      </div>
-      <p>Bugün senin için en güçlü zaman aralığını görmek için kilidi aç.</p>
-    </div>
-
-    <div class="locked-card">
-      <div class="locked-top">
-        <span>Evrenin Mesajı</span>
-        <span class="lock-icon">🔒</span>
-      </div>
-      <p>Sana özel derin kozmik rehberlik premium analizde yer alır.</p>
-    </div>
-  </div>
-
-  <div class="premium-offer">
-    <div class="premium-badge">ASTROLUCK6 PREMIUM</div>
-    <h2>Tam kozmik analizin kilidini aç</h2>
-    <p>
-      Aşk, para, kariyer, şanslı saat, özel mesajlar ve daha fazlasına eriş.
-    </p>
-
-    <div class="plan-boxes">
-      <div class="plan-card">
-        <h3>Aylık Plan</h3>
-        <div class="price">₺99<span>/ay</span></div>
-        <p>Günlük detaylı analizlere eriş</p>
+        <p>Bugün senin için en güçlü zaman aralığını görmek için kilidi aç.</p>
       </div>
 
-      <div class="plan-card featured">
-        <div class="popular-tag">En Popüler</div>
-        <h3>Yıllık Plan</h3>
-        <div class="price">₺799<span>/yıl</span></div>
-        <p>Daha avantajlı fiyat, tam erişim</p>
+      <div class="locked-card">
+        <div class="locked-top">
+          <span>Evrenin Mesajı</span>
+          <span class="lock-icon">🔒</span>
+        </div>
+        <p>Sana özel derin kozmik rehberlik premium analizde yer alır.</p>
       </div>
     </div>
 
-    <button class="premium-btn">Premium’u Aç</button>
+    <div class="premium-offer">
+      <div class="premium-badge">ASTROLUCK6 PREMIUM</div>
+      <h2>Tam kozmik analizin kilidini aç</h2>
+      <p>
+        Aşk, para, kariyer, şanslı saat, özel mesajlar ve daha fazlasına eriş.
+      </p>
 
-    <div class="trust-text">
-      Güvenli ödeme • Anında erişim • İstediğin zaman iptal
+      <div class="plan-boxes">
+        <div class="plan-card">
+          <h3>Aylık Plan</h3>
+          <div class="price">₺99<span>/ay</span></div>
+          <p>Günlük detaylı analizlere eriş</p>
+        </div>
+
+        <div class="plan-card featured">
+          <div class="popular-tag">En Popüler</div>
+          <h3>Yıllık Plan</h3>
+          <div class="price">₺799<span>/yıl</span></div>
+          <p>Daha avantajlı fiyat, tam erişim</p>
+        </div>
+      </div>
+
+      <button class="premium-btn">Premium’u Aç</button>
+
+      <div class="trust-text">
+        Güvenli ödeme • Anında erişim • İstediğin zaman iptal
+      </div>
     </div>
-  </div>
 
-</section>
-}
-</script>
+  </section>
+
 </body>
 </html>
